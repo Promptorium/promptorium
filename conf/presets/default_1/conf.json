@@ -1,0 +1,83 @@
+{
+	"version" : "0.0.8",
+	"components" : [
+		{
+			"name" : "user_component",
+			"content": {
+				"module": "user",
+				"icon": ""
+			},
+			"style" : {
+				"background_color" : "$primary",
+				"foreground_color" : "black"
+			}
+		},
+		{
+			"name" : "cwd_component",
+			 "content": {
+				"module": "cwd",
+				"icon": ""
+			},
+			"style" : {
+				"background_color": "$primary",
+				"foreground_color": "black",
+				"margin" :"1"
+			}
+		},
+		{
+			"name" : "git_branch_component",
+			 "content": {
+				"module": "git_branch",
+				"icon": ""
+			},
+			"style" : {
+				"background_color": "transparent",
+				"foreground_color": "$git_status_color",
+				"start_divider" : "",
+				"end_divider" : "",
+				"padding": "0",
+				"margin":"1 0",
+				"align": "right"
+			}
+		},
+		{
+			"name" : "git_status_component",
+			 "content": {
+				"module": "git_status"
+			},
+			"style" : {
+				"background_color": "black",
+				"padding": "0",
+				"margin": "0 1",
+				"align": "left"
+			}
+		},
+		{
+			"name" : "time_component",
+			"content": {
+				"module": "time",
+				"icon": ""
+				
+			},
+			"style" : {
+				"background_color": "$primary",
+				"foreground_color": "black",
+				"align": "right"
+			}
+		},
+		{
+			"name" :"os_icon_component",
+			"content": {
+				"module": "os_icon"
+			},
+			"style" : {
+				"background_color": "$exit_code_color",
+				"foreground_color": "black",
+				"margin": "1",
+				"padding": "0",
+				"align": "right"
+			}
+		}
+	
+	]
+}
