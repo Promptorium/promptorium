@@ -1,1 +1,1 @@
-# promptorium-go
+# promptorium

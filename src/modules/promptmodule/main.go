@@ -1,7 +1,7 @@
 package promptmodule
 
 import (
-	"promptorium-go/modules/confmodule"
+	"promptorium/modules/confmodule"
 
 	"github.com/rs/zerolog/log"
 	"golang.org/x/term"

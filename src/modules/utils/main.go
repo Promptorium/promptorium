@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"promptorium-go/modules/confmodule"
+	"promptorium/modules/confmodule"
 	"strings"
 	"unicode/utf8"
 )

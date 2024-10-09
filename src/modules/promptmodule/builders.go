@@ -3,8 +3,8 @@ package promptmodule
 import (
 	"fmt"
 	"os"
-	"promptorium-go/modules/confmodule"
-	"promptorium-go/modules/utils"
+	"promptorium/modules/confmodule"
+	"promptorium/modules/utils"
 	"strings"
 	"unicode/utf8"
 
