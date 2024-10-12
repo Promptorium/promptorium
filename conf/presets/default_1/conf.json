@@ -1,6 +1,20 @@
 {
 	"components" : [
 		{
+			"name" :"os_icon_component",
+			"content": {
+				"module": "os_icon"
+			},
+			"style" : {
+				"background_color": "transparent",
+				"foreground_color": "$exit_code_color",
+				"start_divider" : "",
+				"end_divider" : "",
+				"margin": "1",
+				"padding": "0"
+			}
+		},
+		{
 			"name" : "user_component",
 			"content": {
 				"module": "user",
@@ -8,7 +22,9 @@
 			},
 			"style" : {
 				"background_color" : "$primary",
-				"foreground_color" : "black"
+				"foreground_color" : "black",
+				"start_divider" : "",
+				"end_divider" : ""
 			}
 		},
 		{
@@ -20,7 +36,9 @@
 			"style" : {
 				"background_color": "$primary",
 				"foreground_color": "black",
-				"margin" :"1"
+				"margin" :"1",
+				"start_divider" : "",
+				"end_divider" : ""
 			}
 		},
 		{
@@ -34,9 +52,7 @@
 				"foreground_color": "$git_status_color",
 				"start_divider" : "",
 				"end_divider" : "",
-				"padding": "0",
-				"margin":"1 0",
-				"align": "right"
+				"padding": "0"
 			}
 		},
 		{
@@ -45,38 +61,25 @@
 				"module": "git_status"
 			},
 			"style" : {
-				"background_color": "black",
+				"background_color": "transparent",
 				"padding": "0",
-				"margin": "0 1",
-				"align": "left"
+				"start_divider" : "",
+				"end_divider" : ""
 			}
 		},
 		{
 			"name" : "time_component",
 			"content": {
-				"module": "time",
-				"icon": ""
+				"module": "time"
 				
 			},
 			"style" : {
-				"background_color": "$primary",
-				"foreground_color": "black",
-				"align": "right"
-			}
-		},
-		{
-			"name" :"os_icon_component",
-			"content": {
-				"module": "os_icon"
-			},
-			"style" : {
-				"background_color": "$exit_code_color",
-				"foreground_color": "black",
-				"margin": "1",
-				"padding": "0",
+				"background_color": "transparent",
+				"foreground_color": "$exit_code_color",
+				"start_divider" : "",
+				"end_divider" : "",
 				"align": "right"
 			}
 		}
-	
 	]
 }

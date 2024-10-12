@@ -1,7 +1,7 @@
 {
-    "component_start_divider" : "",
-    "component_end_divider" : "",
-    "spacer": "─",
+    "component_start_divider" : "",
+    "component_end_divider" : "",
+    "spacer": " ",
     "primary_color" : "blue",
     "secondary_color" : "green",
     "tertiary_color" : "magenta",
