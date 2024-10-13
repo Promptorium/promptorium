@@ -73,5 +73,24 @@ jobs:
         ARGS: "-rltgoDzvO"
         REMOTE_HOST: ${{ secrets.SSH_HOST }}
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        SOURCE: "./build/deb/"
+        SOURCE: "./build/deb/*.deb"
         TARGET: "/home/${{ secrets.REMOTE_USER }}/promptorium/build/deb/"
+
+    - name: Copy version file
+      uses: easingthemes/ssh-deploy@main
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rltgoDzvO"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        SOURCE: "./build/deb/version"
+        TARGET: "/home/${{ secrets.REMOTE_USER }}/promptorium/build/deb/"
+
+    - name: Update apt repository
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          bash /home/${{ secrets.REMOTE_USER }}/promptorium/scripts/update-apt-repo.bash

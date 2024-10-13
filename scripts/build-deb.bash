@@ -1,6 +1,6 @@
 #!/bin/bash
 
-architectures=("linux/amd64" "linux/arm64" "linux/386")
+architectures=("linux/amd64")
 
 
 
