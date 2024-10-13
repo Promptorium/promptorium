@@ -75,7 +75,7 @@ promptorium prompt --config /usr/share/promptorium/conf/conf.json --theme /usr/s
 
 ## Configuration
 
-The configuration file is located at /usr/share/promptorium/conf/conf.json. It contains an array of components, each of which represents a module in the prompt. Each component has a name, content, and style. The content is the actual content of the module, while the style is used to customize the appearance of the module.
+The configuration file is located at ~.config/promptorium/conf.json. It contains an array of components, each of which represents a module in the prompt. Each component has a name, content, and style. The content is the actual content of the module, while the style is used to customize the appearance of the module.
 
 Here is an example of a configuration file:
 
@@ -206,7 +206,7 @@ The margin and padding properties can be set to a number or a string that repres
 
 ## Themes
 
-The theme file is located at /usr/share/promptorium/conf/theme.json. It contains the following properties:
+The theme file is located at ~/.config/promptorium/theme.json.
 
 - component_start_divider: The start divider of the component
 - component_end_divider: The end divider of the component

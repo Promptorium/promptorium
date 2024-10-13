@@ -7,8 +7,9 @@ permissions:
 
 on:
   push:
-    branches:
-      - main
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*'
 
 
     
@@ -24,14 +25,14 @@ jobs:
       with:
         go-version: '1.23'
     
-    - name: Check commit message
-      run: echo "${{github.event.head_commit.message}}" | grep -q "v[0-9]*\.[0-9]*\.[0-9]*" && echo "Commit message is valid" || (echo "Commit message is not valid" && exit 1)
-      
     - name: Set PROMPTORIUM_VERSION
-      run: echo "PROMPTORIUM_VERSION=$(echo ${{github.event.head_commit.message}} | sed 's/v//g')" >> $GITHUB_ENV
+      run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> $GITHUB_ENV
     
     - name: Build
       run: make build-deb
+
+    - name: Create version file
+      run: echo ${{ env.PROMPTORIUM_VERSION }} > ./build/deb/version
     
     - name: Create Release
       id: create_release
@@ -55,26 +56,6 @@ jobs:
         asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}_linux_amd64
         asset_content_type: application/octet-stream
 
-    - name: Upload arm64 asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/promptorium_${{ env.PROMPTORIUM_VERSION }}_linux_arm64
-        asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}_linux_arm64
-        asset_content_type: application/octet-stream
-
-    - name: Upload 386 asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/promptorium_${{ env.PROMPTORIUM_VERSION }}_linux_386
-        asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}_linux_386
-        asset_content_type: application/octet-stream
-
     - name: Upload amd64 deb asset
       uses: actions/upload-release-asset@v1
       env:
@@ -85,22 +66,12 @@ jobs:
         asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}-1_amd64.deb
         asset_content_type: application/octet-stream
 
-    - name: Upload arm64 deb asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Deploy through ssh
+      uses: easingthemes/ssh-deploy@main
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/deb/promptorium_${{ env.PROMPTORIUM_VERSION }}-1_arm64.deb
-        asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}-1_arm64.deb
-        asset_content_type: application/octet-stream
-
-    - name: Upload 386 deb asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/deb/promptorium_${{ env.PROMPTORIUM_VERSION }}-1_386.deb
-        asset_name: promptorium_${{ env.PROMPTORIUM_VERSION }}-1_386.deb
-        asset_content_type: application/octet-stream
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rltgoDzvO"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        SOURCE: "./build/deb/"
+        TARGET: "/home/${{ secrets.REMOTE_USER }}/promptorium/build/deb/"
