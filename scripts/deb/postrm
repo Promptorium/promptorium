@@ -1,10 +1,9 @@
 #!/bin/bash
 
 function main(){
-    echo "Removing config files"
     for user in $(ls /home); do
     
-        echo "Removing lines from .bashrc and .zshrc"
+        echo "Removing lines from .bashrc and .zshrc for user $user"
         sed -i '/source ~\/.config\/promptorium\/shell\/promptorium.bash/d' /home/$user/.bashrc
         sed -i '/source ~\/.config\/promptorium\/shell\/promptorium.zsh/d' /home/$user/.zshrc
     done
