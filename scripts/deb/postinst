@@ -1,19 +1,5 @@
 #!/bin/bash
 
-function prompt_user(){
-    local prompt=$1
-
-    while true; do
-        read -p "$prompt  [Y/n]: " yn
-        case $yn in
-            [Yy]* ) return 0; break;;
-            [Nn]* ) return 1; break;;
-            * ) return 0;;
-        esac
-    done
-
-}
-
 function add_line_to_file(){
     local line=$1
     local file=$2
@@ -61,8 +47,8 @@ function main(){
         chown -R $user:$user /home/$user/.config/promptorium
         
         # Add shell files to user's .bashrc and .zshrc
-        prompt_user "Do you want promptorium to modify the .bashrc file for user $user?" && add_line_to_file "source ~/.config/promptorium/shell/promptorium.bash" /home/$user/.bashrc
-        prompt_user "Do you want promptorium to modify the .zshrc file for user $user?" && add_line_to_file "source ~/.config/promptorium/shell/promptorium.zsh" /home/$user/.zshrc
+        add_line_to_file "source ~/.config/promptorium/shell/promptorium.bash" /home/$user/.bashrc
+        add_line_to_file "source ~/.config/promptorium/shell/promptorium.zsh" /home/$user/.zshrc
 
     done
 
