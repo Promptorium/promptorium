@@ -1,7 +1,12 @@
 
 all: run
+	
+install:
+	sudo cp -f build/promptorium_$(PROMPTORIUM_VERSION)_linux_amd64 /usr/local/bin/promptorium
+	cp -r conf/* ~/.config/promptorium
+	cp -r shell/* ~/.config/promptorium/shell
 
-install: build-deb
+install-deb: build-deb
 	sudo dpkg -i build/deb/promptorium_$(PROMPTORIUM_VERSION)-1_amd64.deb
 
 build-deb: build
