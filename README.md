@@ -41,7 +41,7 @@ You can add the repository and install promptorium using the following commands:
 
 ```bash
 curl -s http://apt.promptorium.org/gpg-key.public | sudo tee /etc/apt/keyrings/promptorium-gpg.public
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/promptorium-gpg.public] http://apt.promptorium.org/ unstable main" | sudo tee /etc/apt/sources.list.d/promptorium.list
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/promptorium-gpg.public] https://apt.promptorium.org/ unstable main" | sudo tee /etc/apt/sources.list.d/promptorium.list
 sudo apt update
 sudo apt install promptorium
 ```
