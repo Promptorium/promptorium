@@ -1,5 +1,5 @@
 
-# Promptorium <small> PROMPTORIUM_VERSION </small>
+# Promptorium <small> {{PROMPTORIUM_VERSION}} </small>
 
 A modular and configurable terminal prompt builder
 

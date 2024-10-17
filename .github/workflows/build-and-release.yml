@@ -28,9 +28,6 @@ jobs:
     - name: Set PROMPTORIUM_VERSION
       run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> $GITHUB_ENV
 
-    - name: Load CHANGELOG.md to env
-      run: echo "CHANGELOG=$(cat ./docs/unstable/CHANGELOG.md)" >> $GITHUB_ENV
-    
     - name: Build
       run: make build-deb
 
@@ -47,7 +44,7 @@ jobs:
         tag_name: v${{ env.PROMPTORIUM_VERSION }}
         draft: false
         prerelease: false
-        body: "Release of version ${{ env.PROMPTORIUM_VERSION }} \n ${{ env.CHANGELOG }}"
+        body_path: ./docs/CHANGELOG.md
 
     - name: Upload amd64 asset
       uses: actions/upload-release-asset@v1
@@ -104,8 +101,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Set PROMPTORIUM_VERSION
-      run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> $GITHUB_ENV
+    - name: Create version file
+      run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> ./docs/version
 
     - name: Upload documentation folder
       uses: easingthemes/ssh-deploy@main
