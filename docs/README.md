@@ -1,49 +1,28 @@
-# Promptorium
-
-> A modular and configurable terminal prompt builder
 
 ## What is Promptorium?
-Promptorium is a modular and configurable terminal prompt builder. It is designed to be easy to use and configure, while still providing a lot of flexibility and customization options.
+From a high-level perspective, Promptorium is a modular and configurable terminal prompt builder.
 
-## How does it work?
-Promptorium is built around a simple concept: components.
+On a more technical level, Promptorium is a command-line tool that generates a prompt based on a configuration file.
 
-You can think of a component as a small, configurable unit of functionality within the prompt. For example, you might have a component for displaying the current directory, a component for displaying the current time, and a component for displaying the current git branch.
+It does so not by directly modifying the shell's configuration file, but by setting the shell's prompt to the output of the `promptorium prompt` command.
 
-You can define components in a configuration file, putting them together to create a prompt.
-
-
-### Components
-Let's take a look at how a component is defined in a configuration file:
-
-```json
-{
-    "name": "current-directory",
-    "content":{
-        "module":"cwd",
-        "icon":"📂",
-    },
-    "style": {
-        "background_color": "green",
-        "color": "white",
-        "padding": "1 0",
-        "margin": "0 1",
-        "start_divider": "",
-        "end_divider": "",
-    }
-}
-```
+This means that you can use Promptorium to create prompts for any shell, not just bash or zsh.
 
 
+## Get Started
+To start using promptorium, you need to install it on your system.
 
-## Installation
+> [!NOTE] 
+Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for your terminal, as promptorium uses powerline symbols and icons to create its prompt. We recommend using [Fira Code](https://github.com/tonsky/FiraCode) or [JetBrains Mono](https://www.jetbrains.com/lp/mono/) as your Nerdfont.
+
+
 
 ### Debian/Ubuntu
 
 You can add the repository and install promptorium using the following commands:
 
 ```bash
-curl -s http://apt.promptorium.org/gpg-key.public | sudo tee /etc/apt/keyrings/promptorium-gpg.public
+curl -s https://apt.promptorium.org/gpg-key.public | sudo tee /etc/apt/keyrings/promptorium-gpg.public
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/promptorium-gpg.public] https://apt.promptorium.org/ unstable main" | sudo tee /etc/apt/sources.list.d/promptorium.list
 sudo apt update
 sudo apt install promptorium
@@ -56,7 +35,55 @@ sudo dpkg -i promptorium_[version]-1_[arch].deb
 ```
 
 
-## Usage
+Now restart your terminal and you should be good to go!
 
-Promptorium adds a line to your shell's configuration file (e.g. `.bashrc` or `.zshrc`) that sources the promptorium script.
-This script sets the shell's prompt to the output of the `promptorium prompt` command.
+
+## Configuration
+
+The configuration files are located at `~/.config/promptorium/`.
+
+### Configuration file
+The configuration file is a JSON file that contains an array of components.
+Each component has a name, content, and style.
+
+The content is the actual content of the module, while the style is used to customize the appearance of the module.
+
+Here is an example of a configuration file:
+
+```json
+{
+	"components" : [
+		{
+			"name" : "user_component",
+			"content": {
+				"module": "user",
+				"icon": ""
+			},
+			"style" : {
+				"background_color" : "$primary",
+				"foreground_color" : "black"
+			}
+		},
+		{
+			"name" : "cwd_component",
+			 "content": {
+				"module": "cwd",
+				"icon": ""
+			},
+			"style" : {
+				"background_color": "$primary",
+				"foreground_color": "black",
+				"margin" :"1"
+			}
+		}
+    ]
+}
+
+```
+
+In this example, there are two components:
+
+- user_component: The user's username
+- cwd_component: The current working directory
+
+Each component has a style that is used to customize its appearance.
