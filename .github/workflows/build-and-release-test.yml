@@ -6,6 +6,8 @@ permissions:
   contents: write
 
 on:
+  branches:
+    - main
   push:
     # Sequence of patterns matched against refs/tags
     tags:
