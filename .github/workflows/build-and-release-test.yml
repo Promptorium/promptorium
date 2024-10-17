@@ -1,0 +1,64 @@
+
+name: Build and Release
+
+permissions:
+  packages: write
+  contents: write
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'test[0-9]*.[0-9]*.[0-9]*'
+
+
+    
+jobs:
+
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set PROMPTORIUM_VERSION
+      run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/test//g' >> $GITHUB_ENV
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_name: Release ${{ env.PROMPTORIUM_VERSION }}
+        tag_name: v${{ env.PROMPTORIUM_VERSION }}
+        draft: false
+        prerelease: false
+        body_path: ./docs/unstable/CHANGELOG.md
+
+  update-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set PROMPTORIUM_VERSION
+        run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> $GITHUB_ENV
+
+      - name: Upload documentation folder
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SOURCE: "./docs/unstable/*"
+          TARGET: "/home/${{ secrets.REMOTE_USER }}/promptorium/scripts/docs"
+      
+      - name: Update documentation
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            bash /home/${{ secrets.REMOTE_USER }}/promptorium/scripts/update-documentation.bash
