@@ -1,0 +1,61 @@
+
+name: Update Documentation
+
+permissions:
+  packages: write
+  contents: write
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*'
+
+
+jobs:
+  update-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout promptorium
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          path: promptorium
+
+      - name: Run script
+        run: bash promptorium/scripts/update-docs.bash promptorium
+
+      - name: Commit changes
+        run: |
+          cd promptorium
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git commit -m "CI Update documentation"
+          git push origin HEAD:main
+
+      - name: Checkout promptorium.org
+        uses: actions/checkout@v3
+        with:
+          repository: Promptorium/promptorium.org
+          path: promptorium.org
+          token: ${{ secrets.GH_PAT }}
+          ref: main
+
+      - name: Copy files
+        run: |
+          cp -r promptorium/docs/CHANGELOG.md promptorium.org/docs/changelog.md
+          cp -r promptorium/docs/README.md promptorium.org/docs/intro.md
+          cp -r promptorium/docs/configuration.md promptorium.org/docs/configuration.md
+          cp -r promptorium/docs/commands.md promptorium.org/docs/commands.md
+      
+      - name: Commit changes
+        run: |
+          cd promptorium.org
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add .
+          git commit -m "CI Update documentation"
+          git push origin HEAD:main
+
+    

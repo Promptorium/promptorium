@@ -62,10 +62,10 @@ func GetConfig(configPath string, themePath string, shell string, exitCode int) 
 // Loads config from the configPath file in the raw format
 func loadRawConfig(configPath string) RawConfig {
 	conf := RawConfig{}
-	//TODO: Set default config
 	config_file, err := os.ReadFile(configPath)
 	if err != nil {
-		log.Debug().Msg("Error reading config file")
+		log.Debug().Msg("Could not read config file, using default config")
+		conf = getDefaultRawConfig()
 		return conf
 	}
 	err = json.Unmarshal(config_file, &conf)
@@ -81,7 +81,8 @@ func loadRawTheme(themePath string) RawTheme {
 	theme := RawTheme{}
 	themeFile, err := os.ReadFile(themePath)
 	if err != nil {
-		log.Debug().Msg("Error reading theme file")
+		log.Debug().Msg("Could not read theme file, using default theme")
+		theme = getDefaultRawTheme()
 		return theme
 	}
 	err = json.Unmarshal(themeFile, &theme)

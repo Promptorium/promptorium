@@ -21,7 +21,7 @@
 				"icon": ""
 			},
 			"style" : {
-				"background_color" : "$primary",
+				"background_color" : "$primary_color",
 				"foreground_color" : "black",
 				"start_divider" : "",
 				"end_divider" : ""
@@ -34,7 +34,7 @@
 				"icon": ""
 			},
 			"style" : {
-				"background_color": "$primary",
+				"background_color": "$primary_color",
 				"foreground_color": "black",
 				"margin" :"1",
 				"start_divider" : "",

@@ -96,6 +96,9 @@ func (b *PromptBuilder) splitComponents() ([]confmodule.Component, []confmodule.
 func (b *PromptBuilder) joinParts(leftPart PromptPart, rightPart PromptPart) string {
 	//TODO: Better handling of the arrow decoration
 	bottomDecoration, _ := utils.GetBottomDecoration(b.Config)
+	if rightPart.Len == 0 {
+		return leftPart.Str + bottomDecoration
+	}
 	spacer := utils.GetSpacer(b.Config, leftPart.Len+rightPart.Len, b.TerminalWidth)
 	topRow := leftPart.Str + spacer + rightPart.Str + "\n"
 	bottomRow := bottomDecoration
@@ -223,6 +226,16 @@ func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 	}
 	leftDivider := b.Component.Style.StartDivider
 	rightDivider := b.Component.Style.EndDivider
+
+	// Check if dividers are empty. If so, use the theme dividers
+	if leftDivider == "$default" {
+		leftDivider = b.Config.Theme.ComponentStartDivider
+	}
+
+	if rightDivider == "$default" {
+		rightDivider = b.Config.Theme.ComponentEndDivider
+	}
+
 	if utf8.RuneCountInString(leftDivider) != 0 {
 		colorizedLeftDivider := utils.Colorize(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell)
 		b.ComponentStr = colorizedLeftDivider + b.ComponentStr

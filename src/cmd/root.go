@@ -25,7 +25,7 @@ func Execute(version string) {
 
 	if rootCmd.Flags().Changed("version") {
 
-		fmt.Println("promptorium version " + version)
+		fmt.Println(version)
 		os.Exit(0)
 	}
 

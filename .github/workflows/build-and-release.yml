@@ -40,11 +40,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_name: Release ${{ env.PROMPTORIUM_VERSION }}
+        release_name: ${{ env.PROMPTORIUM_VERSION }}
         tag_name: v${{ env.PROMPTORIUM_VERSION }}
         draft: false
         prerelease: false
-        body_path: ./docs/CHANGELOG.md
+        body_path: ./docs/changes.md
 
     - name: Upload amd64 asset
       uses: actions/upload-release-asset@v1
@@ -94,31 +94,3 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           bash /home/${{ secrets.REMOTE_USER }}/promptorium/scripts/update-apt-repo.bash
-
-  update-documentation:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Create version file
-      run: echo "PROMPTORIUM_VERSION=$(git describe --abbrev=0 --tags)" | sed 's/v//g' >> ./docs/version
-
-    - name: Upload documentation folder
-      uses: easingthemes/ssh-deploy@main
-      with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rltgoDzvO"
-        REMOTE_HOST: ${{ secrets.SSH_HOST }}
-        REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        SOURCE: "./docs/*"
-        TARGET: "/home/${{ secrets.REMOTE_USER }}/promptorium/scripts/docs"
-    
-    - name: Update documentation
-      uses: appleboy/ssh-action@v1.1.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          bash /home/${{ secrets.REMOTE_USER }}/promptorium/scripts/update-documentation.bash
