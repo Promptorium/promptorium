@@ -9,11 +9,11 @@ sidebar_position: 1
 From a high-level perspective, Promptorium is a modular and configurable terminal prompt builder.
 
 On a more technical level, Promptorium is a ***command-line tool*** that generates a prompt based on a configuration file.
-It does so by setting the shell's prompt to the output of a command, without using the shell's built-in functionalities. 
+It does so by setting the shell's prompt to the output of a command, without relying on the shell's built-in functionalities. 
 This means that promptorium is almost completely **shell agnostic**.
 
 ## Get Started
-To start using promptorium, you need to install it on your system.
+To start using promptorium, you first need to install it on your system.
 
 :::note 
 Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for your terminal. We recommend using [Fira Code](https://github.com/tonsky/FiraCode) or [JetBrains Mono](https://www.jetbrains.com/lp/mono/).
@@ -21,7 +21,7 @@ Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for you
 
 ### Installation 
 
-For now only two installation methods are available, but more will be added soon.
+For now, two installation methods are available, but more will be added soon.
 
 #### Debian/Ubuntu
 
@@ -40,22 +40,21 @@ Or you can download the deb package from the [releases page](https://github.com/
 sudo dpkg -i promptorium_[version]-1_[arch].deb
 ```
 
-
-Now restart your terminal and you should be good to go!
-
-
 #### Manual
 
-For a manual installation you will need to do the following:
-- Download the executable
-- Download the config and theme files(or write your own)
-- Download the shell script
+You can manually download the executable from the [releases page](https://github.com/Promptorium/promptorium/releases/latest) and place it in your PATH.
+The following command will download the latest version of promptorium and place it in `/usr/local/bin`:
 
-You can download the executable from the [releases page](https://github.com/Promptorium/promptorium/releases) and place it in your PATH.
+```bash
 
-Here you can download the [config files](https://github.com/Promptorium/promptorium/tree/main/conf) and the [shell script](https://github.com/Promptorium/promptorium/tree/main/shell).
+ curl https://api.github.com/repos/Promptorium/promptorium/releases/latest | grep "browser_download_url.*linux_amd64" | cut -d : -f 2,3 | tr -d \" | wget -qi -o /usr/local/bin/promptorium
 
+```
 
+### Initialization
+
+After installing promptorium, you can run `promptorium init` to initialize the config and theme files. It is recommended to run this command after installing promptorium for any of the above installation methods.
+After that, restart your terminal and you should be ready to use promptorium!
 
 ## Configuration
 
