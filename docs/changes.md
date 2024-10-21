@@ -8,5 +8,6 @@ Website:
 Configuration:
 - Added `promptorium init` command to initialize config and theme files. It is recommended to run this command after installing promptorium.
 
-
-
+Installation:
+- Improved installation instructions
+- Added script for manual installation(without a package manager)
