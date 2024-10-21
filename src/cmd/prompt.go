@@ -23,8 +23,8 @@ var promptCmd = &cobra.Command{
 }
 
 func init() {
-	promptCmd.Flags().StringVarP(&configPath, "config", "c", "", "Path to the config file")
-	promptCmd.Flags().StringVarP(&themePath, "theme", "t", "", "Path to the theme file")
+	promptCmd.Flags().StringVarP(&configPath, "config-file", "c", "", "Path to the config file")
+	promptCmd.Flags().StringVarP(&themePath, "theme-file", "t", "", "Path to the theme file")
 	promptCmd.Flags().StringVarP(&shell, "shell", "s", "", "Shell to use (bash, zsh)")
 	promptCmd.Flags().IntVarP(&exitCode, "exit-code", "e", 0, "Exit code of the previous command")
 	rootCmd.AddCommand(promptCmd)
