@@ -82,8 +82,23 @@ Here is an example of a configuration file:
 				"foreground_color": "black",
 				"margin" :"1"
 			}
+		},
+		{
+			"name" : "git_branch_component",
+			 "content": {
+				"module": "git_branch",
+				"icon": ""
+			},
+			"style" : {
+				"background_color": "transparent",
+				"foreground_color": "$git_status_color",
+				"start_divider" : "",
+				"end_divider" : "",
+				"padding": "0",
+				"margin":"1 0",
+				"align": "right"
+			}
 		}
-		...
 	
 	]
 }
