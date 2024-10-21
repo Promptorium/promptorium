@@ -43,11 +43,12 @@ sudo dpkg -i promptorium_[version]-1_[arch].deb
 #### Manual
 
 You can manually download the executable from the [releases page](https://github.com/Promptorium/promptorium/releases/latest) and place it in your PATH.
-The following command will download the latest version of promptorium and place it in `/usr/local/bin`:
+
+The following command will download the latest version of promptorium for the amd64 architecture:
 
 ```bash
 
- curl https://api.github.com/repos/Promptorium/promptorium/releases/latest | grep "browser_download_url.*linux_amd64" | cut -d : -f 2,3 | tr -d \" | wget -qi -o /usr/local/bin/promptorium
+ curl https://api.github.com/repos/Promptorium/promptorium/releases/latest | grep "browser_download_url.*linux_amd64" | cut -d : -f 2,3 | tr -d \" | wget -qi -
 
 ```
 

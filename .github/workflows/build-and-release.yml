@@ -40,7 +40,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_name: Release ${{ env.PROMPTORIUM_VERSION }}
+        release_name: ${{ env.PROMPTORIUM_VERSION }}
         tag_name: v${{ env.PROMPTORIUM_VERSION }}
         draft: false
         prerelease: false

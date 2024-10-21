@@ -46,6 +46,7 @@ jobs:
         run: |
           cp -r promptorium/docs/CHANGELOG.md promptorium.org/docs/changelog.md
           cp -r promptorium/docs/README.md promptorium.org/docs/intro.md
+          cp -r promptorium/docs/configuration.md promptorium.org/docs/configuration.md
       
       - name: Commit changes
         run: |
