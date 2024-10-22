@@ -9,7 +9,7 @@ function create_control_file() {
     echo "Package: promptorium 
 Version: $PROMPTORIUM_VERSION
 Maintainer: Vladislav Parfeniuc
-Homepage: https://www.promptorium.org
+Homepage: https://github.com/Promptorium/promptorium
 Architecture: $arch
 Depends: bash, git, curl
 Description: A modular and configurable terminal prompt builder" > ./build/deb/promptorium_"$PROMPTORIUM_VERSION"-1_$arch/DEBIAN/control
