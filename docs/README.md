@@ -52,11 +52,6 @@ The following command will download the latest version of promptorium for the am
 
 ```
 
-### Initialization
-
-After installing promptorium, you can run `promptorium init` to initialize the config and theme files. It is recommended to run this command after installing promptorium for any of the above installation methods.
-After that, restart your terminal and you should be ready to use promptorium!
-
 ## Configuration
 
 The configuration files are located at `~/.config/promptorium/`.
