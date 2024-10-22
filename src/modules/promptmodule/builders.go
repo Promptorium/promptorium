@@ -226,6 +226,16 @@ func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 	}
 	leftDivider := b.Component.Style.StartDivider
 	rightDivider := b.Component.Style.EndDivider
+
+	// Check if dividers are empty. If so, use the theme dividers
+	if leftDivider == "$default" {
+		leftDivider = b.Config.Theme.ComponentStartDivider
+	}
+
+	if rightDivider == "$default" {
+		rightDivider = b.Config.Theme.ComponentEndDivider
+	}
+
 	if utf8.RuneCountInString(leftDivider) != 0 {
 		colorizedLeftDivider := utils.Colorize(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell)
 		b.ComponentStr = colorizedLeftDivider + b.ComponentStr

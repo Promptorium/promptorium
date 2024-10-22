@@ -65,8 +65,6 @@ func (b *ComponentBuilder) buildOsIconModuleContent() *ComponentBuilder {
 func getOSIcon(config confmodule.Config) string {
 
 	switch strings.ToLower(config.State.OS) {
-	case "windows":
-		return ""
 	case "linux":
 		return "󰌽"
 	case "macos":
@@ -77,6 +75,8 @@ func getOSIcon(config confmodule.Config) string {
 		return ""
 	case "arch":
 		return "󰣇"
+	case "debian":
+		return ""
 	default:
 		return ""
 	}

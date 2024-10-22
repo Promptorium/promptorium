@@ -7,8 +7,8 @@ func getDefaultRawComponentStyle() RawComponentStyle {
 	return RawComponentStyle{
 		BackgroundColor: "$default",
 		ForegroundColor: "$default",
-		StartDivider:    "",
-		EndDivider:      "",
+		StartDivider:    "$default",
+		EndDivider:      "$default",
 		Margin:          "1 0",
 		Padding:         "1 1",
 		Align:           Align("left"),
@@ -135,7 +135,10 @@ func getDefaultRawConfig() RawConfig {
 				Content: RawContent{
 					Module: "user"},
 				Style: RawComponentStyle{
-					Padding: "1",
+					Padding:      "1",
+					Margin:       "0 1",
+					StartDivider: "$default",
+					EndDivider:   "$default",
 				},
 			},
 			{
@@ -143,7 +146,10 @@ func getDefaultRawConfig() RawConfig {
 				Content: RawContent{
 					Module: "cwd"},
 				Style: RawComponentStyle{
-					Padding: "1",
+					Padding:      "1",
+					Margin:       "0 1",
+					StartDivider: "$default",
+					EndDivider:   "$default",
 				},
 			},
 		},
