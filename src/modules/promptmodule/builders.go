@@ -96,6 +96,9 @@ func (b *PromptBuilder) splitComponents() ([]confmodule.Component, []confmodule.
 func (b *PromptBuilder) joinParts(leftPart PromptPart, rightPart PromptPart) string {
 	//TODO: Better handling of the arrow decoration
 	bottomDecoration, _ := utils.GetBottomDecoration(b.Config)
+	if rightPart.Len == 0 {
+		return leftPart.Str + bottomDecoration
+	}
 	spacer := utils.GetSpacer(b.Config, leftPart.Len+rightPart.Len, b.TerminalWidth)
 	topRow := leftPart.Str + spacer + rightPart.Str + "\n"
 	bottomRow := bottomDecoration

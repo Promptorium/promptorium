@@ -27,7 +27,7 @@ func getDefaultRawTheme() RawTheme {
 		SuccessColor:           "green",
 		WarningColor:           "yellow",
 		ErrorColor:             "red",
-		BackgroundColor:        "black",
+		BackgroundColor:        "transparent",
 		ForegroundColor:        "white",
 		GitStatusColorClean:    "green",
 		GitStatusColorDirty:    "yellow",
@@ -49,7 +49,7 @@ func getDefaultTheme() Theme {
 		SuccessColor:           Colors["green"],
 		WarningColor:           Colors["yellow"],
 		ErrorColor:             Colors["red"],
-		BackgroundColor:        Colors["black"],
+		BackgroundColor:        Colors["transparent"],
 		ForegroundColor:        Colors["white"],
 		GitStatusColorClean:    Colors["green"],
 		GitStatusColorDirty:    Colors["yellow"],
@@ -125,4 +125,27 @@ func getColors() map[string]Color {
 	}
 
 	return colors
+}
+
+func getDefaultRawConfig() RawConfig {
+	return RawConfig{
+		Components: []RawComponent{
+			{
+				Name: "user",
+				Content: RawContent{
+					Module: "user"},
+				Style: RawComponentStyle{
+					Padding: "1",
+				},
+			},
+			{
+				Name: "cwd",
+				Content: RawContent{
+					Module: "cwd"},
+				Style: RawComponentStyle{
+					Padding: "1",
+				},
+			},
+		},
+	}
 }
