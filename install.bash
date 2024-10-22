@@ -11,7 +11,8 @@ function main(){
     fi
 
     echo "Installing Promptorium..."
-    local url=$(curl https://api.github.com/repos/Promptorium/promptorium/releases/latest \
+    local url
+    url=$(curl https://api.github.com/repos/Promptorium/promptorium/releases/latest \
     | grep "browser_download_url.*linux_amd64" | cut -d : -f 2,3 | tr -d \" )
     
     if [[ -z $url ]]; then
@@ -20,7 +21,7 @@ function main(){
     fi
 
     echo "Downloading promptorium binary..."
-    sudo wget -q -O /usr/local/bin/promptorium $url
+    sudo wget -q -O /usr/local/bin/promptorium "$url"
     sudo chmod +x /usr/local/bin/promptorium
 
     download_config
@@ -33,13 +34,14 @@ function download_config() {
 
     if [[ -d ~/.config/promptorium ]]; then
         echo "Config directory already exists"
-        #return 0
+        return 0
     fi
 
     mkdir -p ~/.config/promptorium
     mkdir -p ~/.config/promptorium/shell
- 
-    local tarball_url=$(curl -s https://api.github.com/repos/Promptorium/promptorium/releases/latest \
+    
+    local tarball_url
+    tarball_url=$(curl -s https://api.github.com/repos/Promptorium/promptorium/releases/latest \
     | grep "tarball_url" | cut -d : -f 2,3 | tr -d \" | tr -d "," | tr -d " ")
 
     if [[ -z $tarball_url ]]; then
@@ -48,17 +50,17 @@ function download_config() {
     fi
     
     echo "Creating temporary directory..."
-    local temp_dir=$(mktemp -d)
+    local temp_dir
+    temp_dir=$(mktemp -d)
 
     echo "Downloading config files..."
-    wget -q -O $temp_dir/promptorium.tar.gz $tarball_url
-    tar -xzf $temp_dir/promptorium.tar.gz -C $temp_dir
-    cp -r $temp_dir/Promptorium*/conf/* ~/.config/promptorium
-    cp -r $temp_dir/Promptorium*/shell/* ~/.config/promptorium/shell
+    wget -q -O "$temp_dir"/promptorium.tar.gz "$tarball_url"
+    tar -xzf "$temp_dir"/promptorium.tar.gz -C "$temp_dir"
+    cp -r "$temp_dir"/Promptorium*/conf/* ~/.config/promptorium
+    cp -r "$temp_dir"/Promptorium*/shell/* ~/.config/promptorium/shell
 
     echo "Cleaning up..."
-    rm -rf $temp_dir
+    rm -rf "$temp_dir"
 }
 
-download_config
-#main $@
+main "$@"

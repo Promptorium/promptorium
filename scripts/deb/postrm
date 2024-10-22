@@ -1,7 +1,9 @@
 #!/bin/bash
 
 function main(){
-    for user in $(ls /home); do
+    for user_home in /home/*; do
+        local user
+        user=$(basename "$user_home")
     
         echo "Removing lines from .bashrc and .zshrc for user $user"
         sed -i '/source ~\/.config\/promptorium\/shell\/promptorium.bash/d' /home/$user/.bashrc

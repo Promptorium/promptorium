@@ -20,41 +20,43 @@ function add_line_to_file(){
 function main(){
 
     # Copy config files to ~/.config from /usr/share/promptorium/conf
-    for user in $(ls /home); do
+    for user_home in /home/*; do
+        local user
+        user=$(basename "$user_home")
         echo "Copying config files to ~/.config for user $user"
-        mkdir -p /home/$user/.config/promptorium
+        mkdir -p /home/"$user"/.config/promptorium
         # Only copy config files if they don't exist
 
-        if [ ! -f /home/$user/.config/promptorium/conf.json ]; then
-            cp -r /usr/share/promptorium/conf/conf.json /home/$user/.config/promptorium/conf.json
+        if [ ! -f /home/"$user"/.config/promptorium/conf.json ]; then
+            cp -r /usr/share/promptorium/conf/conf.json /home/"$user"/.config/promptorium/conf.json
         else
             echo "Found existing config file for user $user"
         fi
 
-        if [ ! -f /home/$user/.config/promptorium/theme.json ]; then
-            cp -r /usr/share/promptorium/conf/theme.json /home/$user/.config/promptorium/theme.json
+        if [ ! -f /home/"$user"/.config/promptorium/theme.json ]; then
+            cp -r /usr/share/promptorium/conf/theme.json /home/"$user"/.config/promptorium/theme.json
         else
             echo "Found existing theme file for user $user"
         fi
 
-        if [ ! -d /home/$user/.config/promptorium/presets ]; then
-            mkdir -p /home/$user/.config/promptorium/presets
-            cp -r /usr/share/promptorium/conf/presets/* /home/$user/.config/promptorium/presets
+        if [ ! -d /home/"$user"/.config/promptorium/presets ]; then
+            mkdir -p /home/"$user"/.config/promptorium/presets
+            cp -r /usr/share/promptorium/conf/presets/* /home/"$user"/.config/promptorium/presets
         else
             echo "Found existing preset files for user $user"
         fi
 
         # Copy shell files
-        if [ ! -d /home/$user/.config/promptorium/shell ]; then
-            mkdir -p /home/$user/.config/promptorium/shell
-            cp -r /usr/share/promptorium/conf/shell /home/$user/.config/promptorium
+        if [ ! -d /home/"$user"/.config/promptorium/shell ]; then
+            mkdir -p /home/"$user"/.config/promptorium/shell
+            cp -r /usr/share/promptorium/conf/shell /home/"$user"/.config/promptorium
         fi
 
-        chown -R $user:$user /home/$user/.config/promptorium
+        chown -R "$user":"$user" /home/"$user"/.config/promptorium
         
         # Add shell files to user's .bashrc and .zshrc
-        add_line_to_file "source ~/.config/promptorium/shell/promptorium.bash" /home/$user/.bashrc
-        add_line_to_file "source ~/.config/promptorium/shell/promptorium.zsh" /home/$user/.zshrc
+        add_line_to_file "source ~/.config/promptorium/shell/promptorium.bash" /home/"$user"/.bashrc
+        add_line_to_file "source ~/.config/promptorium/shell/promptorium.zsh" /home/"$user"/.zshrc
 
 
     done
