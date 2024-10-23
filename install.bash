@@ -5,7 +5,7 @@
 set -e
 function main(){
 
-    if [[ -n $(promptorium --version) ]]; then
+    if [[ -n $(promptorium --version 2>/dev/null) ]]; then
         echo "Promptorium is already installed"
         exit 1
     fi
@@ -74,22 +74,47 @@ function generic_install() {
     download_config
 
     echo "Successfully installed promptorium"
-    echo "Please restart your terminal and you should be ready to use promptorium!"
+    echo "Please restart your terminal to apply the changes"
 }
 
 function apt_install() {
+    
     echo "Installing Promptorium using apt..."
-    curl -s https://apt.promptorium.org/gpg-key.public | sudo tee /etc/apt/keyrings/promptorium-gpg.public
-    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/promptorium-gpg.public] https://apt.promptorium.org/ unstable main" | sudo tee /etc/apt/sources.list.d/promptorium.list
+
+    if [[ ! -f /etc/apt/keyrings/promptorium-gpg.public ]]; then
+        echo "Adding promptorium gpg key..."
+        local gpg_key
+        gpg_key=$(curl -s https://apt.promptorium.org/gpg-key.public)
+        echo "$gpg_key" | sudo tee /etc/apt/keyrings/promptorium-gpg.public > /dev/null
+    else
+        echo "promptorium gpg key already exists"
+    
+    fi
+
+    if [[ ! -f /etc/apt/sources.list.d/promptorium.list ]]; then
+        echo "Adding promptorium apt repository..."
+        local repository_url
+        repository_url="deb [arch=amd64 signed-by=/etc/apt/keyrings/promptorium-gpg.public] https://apt.promptorium.org/ unstable main"
+
+        echo "$repository_url" | sudo tee /etc/apt/sources.list.d/promptorium.list > /dev/null
+    else
+        echo "promptorium apt repository already exists"
+    fi
+
+    # Install promptorium
+    echo "Updating apt repositories..."
     sudo apt update
     sudo apt install promptorium
+
+    echo "Successfully installed promptorium"
+    echo "Please restart your terminal to apply the changes"
 }
 
 function is_using_apt() {
-    if [[ -n $(command -v apt-get) ]]; then
+    if [[ -n $(command -v apt-get 2>/dev/null) ]]; then
         return 0
     fi
-    if [[ -n $(command -v apt) ]]; then
+    if [[ -n $(command -v apt 2>/dev/null) ]]; then
         return 0
     fi
     exit 1
@@ -102,4 +127,4 @@ function is_using_amd64() {
     return 1
 }
 
-main "$@"
+main
