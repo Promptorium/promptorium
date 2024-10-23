@@ -21,11 +21,20 @@ Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for you
 
 ### Installation 
 
-For now, two installation methods are available, but more will be added soon.
+#### Main Method
+Promptorium provides a common installation script that you can use to install it on your system. To use it, run the following command:
 
-#### Debian/Ubuntu
+```bash
+ curl https://raw.githubusercontent.com/Promptorium/promptorium/refs/heads/main/install.bash | bash
+```
 
-You can add the repository and install promptorium using the following commands:
+The script will install promptorium on your system, automatically detecting your operating system and architecture. Once it's done, restart your terminal and you should see the default promptorium prompt.
+
+#### Other Methods
+
+##### Debian/Ubuntu
+
+You can manually add the repository and install promptorium using the following commands:
 
 ```bash
 curl -s https://apt.promptorium.org/gpg-key.public | sudo tee /etc/apt/keyrings/promptorium-gpg.public
@@ -39,13 +48,16 @@ Or you can download the deb package from the [releases page](https://github.com/
 ```bash
 sudo dpkg -i promptorium_[version]-1_[arch].deb
 ```
+Then run `promptorium init`, restart your terminal and you should see the default promptorium prompt.
 
-#### Install script
 
-Promptorium also provides an install script that can be used to install the latest version of Promptorium on your system. The script will download the latest version of Promptorium for amd64 architecture and install it in your PATH.
+##### Manual Installation
+
+You can also manually install promptorium by downloading the executable from the [releases page](https://github.com/Promptorium/promptorium/releases) and placing it in your `$PATH`.
+After that, run the following command:
 
 ```bash
- curl https://raw.githubusercontent.com/Promptorium/promptorium/refs/heads/main/install.bash | bash
+promptorium init
 ```
 
 ## Configuration
@@ -53,3 +65,5 @@ Promptorium also provides an install script that can be used to install the late
 The configuration files are located at `~/.config/promptorium/`.
 
 Configuration of Promptorium is split in two parts: `conf.json` and `theme.json`
+
+You can find out more information on how to configure Promptorium in the [configuration documentation](https://www.promptorium.org/docs/configuration/).

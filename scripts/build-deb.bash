@@ -61,7 +61,6 @@ function copy_config_files() {
     # Copy config files
     mkdir -p $deb_directory/usr/share/promptorium/conf
     cp -r ./conf/* $deb_directory/usr/share/promptorium/conf
-    cp -r ./shell $deb_directory/usr/share/promptorium/conf/shell
 
 }
 

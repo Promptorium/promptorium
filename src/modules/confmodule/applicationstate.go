@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -135,6 +136,7 @@ func getExitCode(exitCode int) int {
 }
 
 func getShell(shell string) string {
+	shell = filepath.Base(shell)
 	switch shell {
 	case "bash":
 		return "bash"
