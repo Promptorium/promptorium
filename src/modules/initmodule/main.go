@@ -5,58 +5,84 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 func InitPromptorium() {
 	// Initialize promptorium
 	fmt.Println("Initializing promptorium")
 
+	createDirectory()
 	copyConfigFiles()
 	copyThemeFiles()
 	copyPresetFiles()
+	giveFilePermissions()
 	// Add line to ~/.bashrc and/or ~/.zshrc to source promptorium shell
 	addSourceLines()
+
+	fmt.Println("promptorium initialized")
+}
+func createDirectory() {
+	// Check if ~/.config/promptorium directory already exists
+	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium")
+	if err == nil {
+		log.Debug().Msgf("Found existing ~/.config/promptorium directory")
+		return
+	}
+	// Create ~/.config/promptorium directory
+	fmt.Println("Creating ~/.config/promptorium directory")
+	user := os.Getenv("USER")
+	cmd := exec.Command("sudo", "mkdir", "-p", "/home/"+user+"/.config/promptorium")
+	cmd.Run()
 }
 
 func copyConfigFiles() {
 	// Check if config files already exist
-	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium")
+	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium/conf.json")
 	if err == nil {
-		fmt.Println("Found existing config files")
+		log.Debug().Msgf("Found existing config file")
 		return
 	}
 	// Copy config files
 	fmt.Println("Copying config files")
 	user := os.Getenv("USER")
-	cmd := exec.Command("sudo", "cp", "-r", "/usr/share/promptorium/conf", "/home/"+user+"/.config/promptorium")
+	cmd := exec.Command("sudo", "cp", "/usr/share/promptorium/conf/conf.json", "/home/"+user+"/.config/promptorium/conf.json")
 	cmd.Run()
 }
 
 func copyThemeFiles() {
 	// Check if theme files already exist
-	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium")
+	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium/theme.json")
 	if err == nil {
-		fmt.Println("Found existing theme files")
+		log.Debug().Msgf("Found existing theme file")
 		return
 	}
 	// Copy theme files
-	fmt.Println("Copying theme files")
+	log.Debug().Msgf("Copying theme file")
 	user := os.Getenv("USER")
-	cmd := exec.Command("sudo", "cp", "-r", "/usr/share/promptorium/theme", "/home/"+user+"/.config/promptorium")
+	cmd := exec.Command("sudo", "cp", "/usr/share/promptorium/conf/theme.json", "/home/"+user+"/.config/promptorium/theme.json")
+	cmd.Run()
+}
+
+func giveFilePermissions() {
+	// Give file permissions to user
+	user := os.Getenv("USER")
+	cmd := exec.Command("sudo", "chown", "-R", user+":"+user, "/home/"+user+"/.config/promptorium")
 	cmd.Run()
 }
 
 func copyPresetFiles() {
 	// Check if preset files already exist
-	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium")
+	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.config/promptorium/presets")
 	if err == nil {
-		fmt.Println("Found existing preset files")
+		log.Debug().Msgf("Found existing preset files")
 		return
 	}
 	// Copy preset files
-	fmt.Println("Copying preset files")
+	log.Debug().Msgf("Copying preset files")
 	user := os.Getenv("USER")
-	cmd := exec.Command("sudo", "cp", "-r", "/usr/share/promptorium/presets", "/home/"+user+"/.config/promptorium")
+	cmd := exec.Command("sudo", "cp", "-r", "/usr/share/promptorium/conf/presets", "/home/"+user+"/.config/promptorium/presets")
 	cmd.Run()
 }
 
@@ -64,13 +90,13 @@ func addSourceLines() {
 	// Add line to ~/.bashrc and/or ~/.zshrc to source promptorium shell
 	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.zshrc")
 	if err == nil {
-		fmt.Println("Found .zshrc file")
+		log.Debug().Msgf("Found .zshrc file")
 		addSourceLine("/home/" + os.Getenv("USER") + "/.zshrc")
 	}
 
 	_, err = os.Stat("/home/" + os.Getenv("USER") + "/.bashrc")
 	if err == nil {
-		fmt.Println("Found .bashrc file")
+		log.Debug().Msgf("Found .bashrc file")
 		addSourceLine("/home/" + os.Getenv("USER") + "/.bashrc")
 	}
 }

@@ -44,14 +44,6 @@ function create_deb_package() {
 
     copy_config_files
 
-    # Copy postinst script
-    cp ./scripts/deb/postinst $deb_directory/DEBIAN/postinst
-    chmod +x $deb_directory/DEBIAN/postinst
-
-    # Copy postrm script
-    cp ./scripts/deb/postrm $deb_directory/DEBIAN/postrm
-    chmod +x $deb_directory/DEBIAN/postrm
-
     # Create package
     dpkg --build $deb_directory
 
