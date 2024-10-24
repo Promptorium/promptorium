@@ -5,12 +5,16 @@ Website:
 - Updated CI/CD pipeline to automatically update the website on every release
 - Added new documentation page dedicated to configuration
 
-Configuration:
-- Added `promptorium init` command to initialize config and theme files. It is recommended to run this command after installing promptorium.
-
 Installation:
 - Improved installation instructions
 - Added script for manual installation(without a package manager)
+
+Commands:
+- Added `promptorium shell` command which prints the shell script for the current shell.
+- Added `promptorium init` command which does the following:
+    - Creates `~/.config/promptorium` directory
+    - Copies `conf.json` and `theme.json` files from `/usr/share/promptorium/conf` to `~/.config/promptorium`
+    - Appends `if [[ $(command -v promptorium) 2> /dev/null ]]; then source<(promptorium shell)` to `~/.bashrc` and/or `~/.zshrc` to source promptorium shell script
 
 Fixes:
 - Fixed separator being printed when there are no components on the right side
