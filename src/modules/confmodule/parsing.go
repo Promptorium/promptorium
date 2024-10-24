@@ -214,22 +214,22 @@ func parseColor(rawColor RawColorName, theme Theme, colorName string, defaultCol
 	case "white":
 		color = Colors["white"]
 	case "none":
-		color = Colors["none"]
+		color = Colors["transparent"]
 	case "transparent":
 		color = Colors["transparent"]
-	case "$primary":
+	case "$primary_color":
 		color = theme.PrimaryColor
-	case "$secondary":
+	case "$secondary_color":
 		color = theme.SecondaryColor
-	case "$tertiary":
+	case "$tertiary_color":
 		color = theme.TertiaryColor
-	case "$quaternary":
+	case "$quaternary_color":
 		color = theme.QuaternaryColor
-	case "$success":
+	case "$success_color":
 		color = theme.SuccessColor
-	case "$warning":
+	case "$warning_color":
 		color = theme.WarningColor
-	case "$error":
+	case "$error_color":
 		color = theme.ErrorColor
 	case "$git_status_color":
 		color = getGitStatusColor(theme, state)

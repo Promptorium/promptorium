@@ -302,7 +302,7 @@ Here is an example of a **color function**:
         "module": "my_module"
     },
     "style": {
-        "background_color": "$exit_status_color"
+        "background_color": "$exit_code_color"
     }
 }
 ```
@@ -348,7 +348,7 @@ When using theme colors in components, remember to put a `$` in front of the col
 Color functions are special colors which change depending on the state of the application.
 
 Here are the available color functions:
-- `exit_status_color`
+- `exit_code_color`
 - `git_status_color`
 
 You can customize the color for each of the color functions' states in the `theme.json` file.
@@ -357,9 +357,9 @@ You can customize the color for each of the color functions' states in the `them
 Color functions can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`)
 :::
 
-#### exit_status_color
+#### exit_code_color
 
-The `exit_status_color` color function is used to display the exit status of last executed command.
+The `exit_code_color` color function is used to display the exit status of last executed command.
 Here is the color function's states and corresponding colors:
 - success: the previous command returned 0. Uses the `success_color` theme color.
 - error: the previous command returned a non-zero exit status. Uses the `error_color` theme color.
@@ -445,3 +445,8 @@ Let's say you have two presets, `default_1` and `default_2`. The `conf.json` and
 ```
 
 To use the `default_1` preset, set the `preset` key in the `conf.json` file to `default_1`. Promptorium will load the `default_1` preset's `conf.json` and `theme.json` files.
+
+::::note
+If the `preset` key in the `conf.json` file is set, Promptorium will ignore the rest of the `conf.json` file and the `theme.json` file.
+::::
+ 
