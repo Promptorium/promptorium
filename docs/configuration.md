@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # Configuration
@@ -14,7 +14,7 @@ Components are the building blocks of the prompt. Each component has a name, con
 
 The `conf.json` file contains an array of objects, representing components. Each object has the following structure:
 
-```json
+```json title="~/.config/promptorium/conf.json"
 {
     "components":[
         {
@@ -46,7 +46,7 @@ The `conf.json` file contains an array of objects, representing components. Each
 
 ### Name (Required)
 
-The `name` field is the name of the component. It is used to identify the component in the `theme.json` file.
+The `name` field is the name of the component. It is needed to uniquely identify the component.
 
 ### Content (Required)
 
@@ -71,8 +71,8 @@ See below for more details on each module.
 
 The `icon` field is the character that will be displayed as the icon of the component. By default it is an empty string.
 
-:::note 
-Promptorium assumes that the icon is a single character. Setting an icon with more than one character will result in incorrect behavior.
+:::warning 
+Promptorium needs the `icon` to be one character long. Setting anicon with more than one character will result in incorrect behavior.
 :::
 
 #### Icon Style (Optional)
@@ -114,7 +114,7 @@ The `style` object has the following structure:
 
 #### Background Color (Optional)
 
-The `background_color` field is the background color of the component. See below for more details on the available colors.
+The `background_color` field is the background color of the component. See the [Colors](#colors) section for more details on the available colors.
 
 #### Foreground Color (Optional)
 
@@ -124,22 +124,19 @@ The `foreground_color` field is the foreground(text) color of the component.
 
 The `start_divider` field is the character that will be displayed at the beginning of the component. By default it is the theme's start divider.
 
-:::note 
-Promptorium assumes that the start divider is a single character. Setting a start divider with more than one character will result in incorrect behavior.
-:::
-
 #### End Divider (Optional)
 
 The `end_divider` field is the character that will be displayed at the end of the component. By default it is the theme's end divider.
 
-:::note 
-Promptorium assumes that the end divider is a single character. Setting an end divider with more than one character will result in incorrect behavior.
+:::warning 
+Promptorium needs the `start_divider` and `end_divider` to be one character long. Setting them with more than one character will result in incorrect behavior.
 :::
 
 #### Align (Optional)
 
 The `align` field is the alignment of the component. Promptorium supports the following alignments: `left`, `right`. By default it is set to `left`
 
+Components aligned to the right are displayed on the right side of the prompt, separated from components aligned to the left by a string composed of [spacer](#spacer-optional) characters.
 #### Margin (Optional)
 
 The `margin` field is the margin of the component, or the space between the component and other components. It can be either a single number or two numbers separated by a space.
@@ -158,7 +155,7 @@ The `theme.json` file contains the theme's colors and other settings. The theme'
 
 The `theme.json` file has the following structure:
 
-```json
+```json title="~/.config/promptorium/theme.json"
 {
     "component_start_divider": "component_start_divider",
     "component_end_divider": "component_end_divider",
@@ -183,11 +180,11 @@ The `theme.json` file has the following structure:
 
 #### Component Start Divider (Optional)
 
-The `component_start_divider` field is the character that will be displayed at the beginning of each component unless the `start_divider` field is set. Default value is ""
+The `component_start_divider` field is the character that will be displayed at the beginning of each component unless the `start_divider` field of the component is set.
 
 #### Component End Divider (Optional)
 
-The `component_end_divider` field is the character that will be displayed at the end of each component unless the `end_divider` field is set. Default value is ""
+The `component_end_divider` field is the character that will be displayed at the end of each component unless the `end_divider` field of the component is set.
 
 #### Spacer (Optional)
 
@@ -255,10 +252,16 @@ The `git_status_no_remote` field is the color of the git status when no remote b
 
 ## Colors
 
-Promptorium has three types of color parameters: **base colors**, **theme colors** and **color variables**.
-**Base colors** are predefined colors that you can use as-is. **Theme colors** are colors that you can customize using the `theme.json` file, and **color functions** are special colors which change depending on the state of the application.
+Promptorium has three types of color parameters: ***base colors***, ***theme colors*** and ***color functions***.
 
-For example, if you want to change the background color of a component to blue, you can do so by setting the `background_color` parameter in the `style` object of the component, like this:
+**[Base colors](#base-colors)** are predefined colors that you can use as-is.
+
+**[Theme colors](#theme-colors)** are colors that you can customize using the `theme.json` file.
+
+**[Color functions](#color-functions)** are special colors which change depending on the state of the application.
+
+
+For example, here is an example of a **base color**:
 
 ```json
 
@@ -268,6 +271,7 @@ For example, if you want to change the background color of a component to blue, 
         "module": "my_module"
     },
     "style": {
+        // highlight-next-line
         "background_color": "blue"
     }
 }
@@ -284,15 +288,12 @@ Here is an example of a **theme color**:
         "module": "my_module"
     },
     "style": {
-        "background_color": "$primary"
+        // highlight-next-line
+        "background_color": "$primary_color"
     }
 }
 ```
 In this case, the background color is being set to a **theme color**. You can customize the theme colors in the `theme.json` file.
-
-:::note
-Theme colors can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`)
-:::
 
 Here is an example of a **color function**:
 ```json
@@ -302,6 +303,7 @@ Here is an example of a **color function**:
         "module": "my_module"
     },
     "style": {
+        // highlight-next-line
         "background_color": "$exit_code_color"
     }
 }
@@ -310,6 +312,11 @@ Here is an example of a **color function**:
 In this case, the background color is being set to a **color function**. You can customize the color function in the `theme.json` file.
 
 You can find more information about color functions in the [Color Functions](#color-functions) section.
+
+:::info
+Theme colors and color functions can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`)
+:::
+
 
 ### Base Colors
 
@@ -328,8 +335,7 @@ Here are the available base colors:
 
 ### Theme Colors
 
-Theme colors are colors that you can customize using the `theme.json` file. They can only be set to base colors. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`). 
-
+Theme colors are colors that you can customize using the `theme.json` file.
 Here are the available theme colors:
 - `primary_color` 
 - `secondary_color`
@@ -352,10 +358,6 @@ Here are the available color functions:
 - `git_status_color`
 
 You can customize the color for each of the color functions' states in the `theme.json` file.
-
-:::note
-Color functions can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`)
-:::
 
 #### exit_code_color
 
@@ -446,7 +448,12 @@ Let's say you have two presets, `default_1` and `default_2`. The `conf.json` and
 
 To use the `default_1` preset, set the `preset` key in the `conf.json` file to `default_1`. Promptorium will load the `default_1` preset's `conf.json` and `theme.json` files.
 
-::::note
+```json title="~/.config/promptorium/conf.json"
+{
+    "preset" : "default_1"
+}
+
+::::info
 If the `preset` key in the `conf.json` file is set, Promptorium will ignore the rest of the `conf.json` file and the `theme.json` file.
 ::::
  
