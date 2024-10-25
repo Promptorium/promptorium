@@ -89,7 +89,7 @@ func addSourceLines() {
 
 func addSourceLine(file string, shell string) {
 	// Add line to .bashrc or .zshrc to source promptorium shell
-	var lineToAdd = "if [[ -n $(command -v promptorium) ]]; then source <(promptorium --shell " + shell + "); fi"
+	var lineToAdd = "if [[ -n $(command -v promptorium) ]]; then source <(promptorium shell --shell " + shell + "); fi"
 	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
