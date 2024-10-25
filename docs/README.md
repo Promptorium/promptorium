@@ -6,6 +6,9 @@ sidebar_position: 1
 
 
 ## What is Promptorium?
+
+![Showcase](../static/assets/screenshot-1.png)
+
 From a high-level perspective, Promptorium is a modular and configurable terminal prompt builder.
 
 On a more technical level, Promptorium is a ***command-line tool*** that generates a prompt based on a configuration file.
@@ -21,8 +24,7 @@ Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for you
 
 ### Installation 
 
-#### Install script (Recommended)
-
+#### Installation Script (recommended)
 Promptorium provides a common installation script that you can use to install it on your system. To use it, run the following command:
 
 ```bash
@@ -62,6 +64,8 @@ promptorium init
 ```
 
 ## Configuration
+
+![Showcase](../static/assets/screenshot-5.png)
 
 The configuration files are located at `~/.config/promptorium/`.
 

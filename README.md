@@ -2,6 +2,9 @@
 
 
 ## What is Promptorium?
+
+![Preview](https://raw.githubusercontent.com/Promptorium/promptorium/main/screenshots/screenshot-1.png)
+
 From a high-level perspective, Promptorium is a modular and configurable terminal prompt builder.
 
 On a more technical level, Promptorium is a ***command-line tool*** that generates a prompt based on a configuration file.
@@ -56,6 +59,9 @@ promptorium init
 ```
 
 ## Configuration
+
+![Preview](https://raw.githubusercontent.com/Promptorium/promptorium/main/screenshots/screenshot-5.png)
+
 
 The configuration files are located at `~/.config/promptorium/`.
 
