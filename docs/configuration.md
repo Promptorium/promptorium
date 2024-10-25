@@ -452,8 +452,9 @@ To use the `default_1` preset, set the `preset` key in the `conf.json` file to `
 {
     "preset" : "default_1"
 }
+```
 
-::::info
+:::info
 If the `preset` key in the `conf.json` file is set, Promptorium will ignore the rest of the `conf.json` file and the `theme.json` file.
-::::
+:::
  

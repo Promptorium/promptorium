@@ -21,7 +21,8 @@ Make sure you are using a patched [Nerdfont](https://www.nerdfonts.com/) for you
 
 ### Installation 
 
-#### Main Method
+#### Install script (Recommended)
+
 Promptorium provides a common installation script that you can use to install it on your system. To use it, run the following command:
 
 ```bash
