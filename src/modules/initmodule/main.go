@@ -77,19 +77,19 @@ func addSourceLines() {
 	_, err := os.Stat("/home/" + os.Getenv("USER") + "/.zshrc")
 	if err == nil {
 		log.Debug().Msgf("Found .zshrc file")
-		addSourceLine("/home/" + os.Getenv("USER") + "/.zshrc")
+		addSourceLine("/home/"+os.Getenv("USER")+"/.zshrc", "zsh")
 	}
 
 	_, err = os.Stat("/home/" + os.Getenv("USER") + "/.bashrc")
 	if err == nil {
 		log.Debug().Msgf("Found .bashrc file")
-		addSourceLine("/home/" + os.Getenv("USER") + "/.bashrc")
+		addSourceLine("/home/"+os.Getenv("USER")+"/.bashrc", "bash")
 	}
 }
 
-func addSourceLine(file string) {
+func addSourceLine(file string, shell string) {
 	// Add line to .bashrc or .zshrc to source promptorium shell
-	var lineToAdd = "if [[ $(command -v promptorium) 2> /dev/null ]]; then source <(promptorium shell); fi"
+	var lineToAdd = "if [[ -n $(command -v promptorium) ]]; then source <(promptorium --shell " + shell + "); fi"
 	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -106,7 +106,7 @@ func addSourceLine(file string) {
 	// Add line
 	defer f.Close()
 	log.Debug().Msgf("Adding line to " + file)
-	if _, err = f.WriteString("\n" + lineToAdd + "\n"); err != nil {
+	if _, err = f.WriteString("\n" + lineToAdd); err != nil {
 		fmt.Println(err)
 	}
 }

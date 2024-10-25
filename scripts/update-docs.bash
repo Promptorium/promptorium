@@ -4,7 +4,7 @@
 # It appends the contents of the "docs/changes.md" file to the "docs/CHANGELOG.md" file, then empties the "docs/changes.md" file
 
 function checks() {
-
+    local changes
     if [ ! -f "docs/CHANGELOG.md" ]; then
         echo "docs/CHANGELOG.md does not exist"
         exit 1
@@ -14,7 +14,7 @@ function checks() {
         echo "docs/changes.md does not exist"
         exit 1
     fi
-    local changes=$(cat "docs/changes.md")
+    changes=$(cat "docs/changes.md")
     if [ -z "$changes" ]; then
         echo "docs/changes.md is empty"
         exit 1
@@ -25,9 +25,9 @@ function main() {
     if [ -z "$path_to_repo" ]; then
         path_to_repo=$(pwd)
     fi
-    cd $path_to_repo
+    cd "$path_to_repo" || exit
 
-    checks $@
+    checks "$@"
 
     echo "Appending changes to CHANGELOG.md"
     echo "" >> "docs/CHANGELOG.md"
@@ -38,4 +38,4 @@ function main() {
     echo "Done"
 }
 
-main $@
+main "$@"

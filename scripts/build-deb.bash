@@ -67,4 +67,4 @@ Description: A modular and configurable terminal prompt builder" > ./build/deb/p
 
 }
 
-main $@
+main "$@"

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/rs/zerolog/log"
 )
 
 func GetShellScript(shell string, configPath string, themePath string) string {
@@ -12,6 +14,7 @@ func GetShellScript(shell string, configPath string, themePath string) string {
 		shell = filepath.Base(os.Getenv("SHELL"))
 	}
 
+	log.Debug().Msgf("Shell: %s", shell)
 	return getShellScript(configPath, themePath, shell)
 }
 
