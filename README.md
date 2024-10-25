@@ -23,7 +23,7 @@ Promptorium provides a common installation script that you can use to install it
  curl https://raw.githubusercontent.com/Promptorium/promptorium/refs/heads/main/install.bash | bash
 ```
 
-The script will install promptorium on your system, automatically detecting your operating system and architecture. Once it's done, run `promptorium init`, restart your terminal and you should see the default promptorium prompt.
+The script will install promptorium on your system, automatically detecting your operating system and architecture. Once it's done, restart your terminal and you should see the default promptorium prompt.
 
 #### Other Methods
 
