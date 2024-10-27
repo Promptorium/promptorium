@@ -124,7 +124,7 @@ function is_using_apt() {
     if [[ -n $(command -v apt 2>/dev/null) ]]; then
         return 0
     fi
-    exit 1
+    return 1
 }
 
 function is_using_amd64() {
