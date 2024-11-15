@@ -15,7 +15,8 @@ type GitContext struct {
 	IsDirty         bool
 	IsDetachedHead  bool
 	LocalBranch     string
-	RemoteBranch    string
+	UpstreamBranch  string
+	Remote          string
 	Ahead           int
 	Behind          int
 	UnstagedChanges int
@@ -34,27 +35,28 @@ func GetGitState() GitContext {
 	cmd := exec.Command("git", "status", "--porcelain=v2", "--branch", "-z")
 	output, err := cmd.Output()
 	if err != nil {
-		log.Debug().Msgf("[CONTEXT@gitcontext] Error getting git context: %s", err)
+		log.Trace().Msgf("Error getting git context: %s", err)
 		return GitContext{
 			IsGitRepo: false,
 		}
 	}
 	changes, err := getchanges(output)
 	if err != nil {
-		log.Debug().Msgf("[CONTEXT@gitcontext] Error parsing git context: %s", err)
+		log.Trace().Msgf("Error parsing git context: %s", err)
 		return GitContext{
 			IsGitRepo: false,
 		}
 	}
 	localBranch := getLocalBranch(output)
-	remoteBranch := getRemoteBranch(output)
+	upstreamBranch, remote := getUpstreamBranchAndRemote(output)
 	ahead, behind := getAheadBehind(output)
 
 	// Return the git context
-	log.Debug().Msgf("[CONTEXT@gitcontext] Found git repo")
-	log.Debug().Msgf("[CONTEXT@gitcontext] Git branch: %s", localBranch)
-	log.Debug().Msgf("[CONTEXT@gitcontext] Git remote: %s", remoteBranch)
-	log.Debug().Msgf("[CONTEXT@gitcontext] Git ahead: %d, behind: %d, unstaged changes: %d, staged changes: %d, untracked files: %d", ahead, behind, changes.UnstagedChanges, changes.StagedChanges, changes.UntrackedFiles)
+	log.Trace().Msgf("Found git repo")
+	log.Trace().Msgf("Git remote: %s", remote)
+	log.Trace().Msgf("Git branch: %s", localBranch)
+	log.Trace().Msgf("Git upstream: %s", upstreamBranch)
+	log.Trace().Msgf("Git ahead: %d, behind: %d, unstaged changes: %d, staged changes: %d, untracked files: %d", ahead, behind, changes.UnstagedChanges, changes.StagedChanges, changes.UntrackedFiles)
 
 	isDirty := ahead > 0 || behind > 0 || changes.StagedChanges > 0 || changes.UnstagedChanges > 0 || changes.UntrackedFiles > 0
 
@@ -63,7 +65,8 @@ func GetGitState() GitContext {
 		IsDirty:         isDirty,
 		IsDetachedHead:  false,
 		LocalBranch:     localBranch,
-		RemoteBranch:    remoteBranch,
+		UpstreamBranch:  upstreamBranch,
+		Remote:          remote,
 		Ahead:           ahead,
 		Behind:          behind,
 		UnstagedChanges: changes.UnstagedChanges,
@@ -130,21 +133,23 @@ func getAheadBehind(gitStatus []byte) (int, int) {
 	return ahead, behind
 }
 
-func getRemoteBranch(gitStatus []byte) string {
-	remoteBranch := ""
+func getUpstreamBranchAndRemote(gitStatus []byte) (string, string) {
+	upstreamBranch := ""
+	remote := ""
 	for _, line := range strings.Split(string(gitStatus), "\x00") {
 		if line == "" {
 			continue
 		}
 		if strings.HasPrefix(line, "# branch.upstream") {
 			// Header lines are parsed in another function
-			remoteBranch = strings.TrimPrefix(line, "# branch.upstream ")
+			upstream := strings.TrimPrefix(line, "# branch.upstream ")
+			remote = strings.Split(upstream, "/")[0]
+			upstreamBranch = strings.Split(upstream, "/")[1]
 			break
 		}
 	}
-	return remoteBranch
+	return upstreamBranch, remote
 }
-
 func getLocalBranch(gitStatus []byte) string {
 	localBranch := ""
 	for _, line := range strings.Split(string(gitStatus), "\x00") {

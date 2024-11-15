@@ -5,6 +5,7 @@ import (
 	"promptorium/cmd/modules/promptmodule"
 	"strconv"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -15,7 +16,7 @@ var promptCmd = &cobra.Command{
 	Long: `Prints the prompt string based on the config file.
 	If the config file is not found, it will print a default prompt.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		runPromptCmd(cmd.Flags())
+		runPromptCmd(cmd.Flags(), Version)
 	},
 }
 
@@ -27,7 +28,7 @@ func init() {
 	rootCmd.AddCommand(promptCmd)
 }
 
-func runPromptCmd(pFlags *pflag.FlagSet) {
+func runPromptCmd(pFlags *pflag.FlagSet, version string) {
 
 	var configPath string
 	var themePath string
@@ -48,6 +49,7 @@ func runPromptCmd(pFlags *pflag.FlagSet) {
 			exitCode, _ = strconv.Atoi(flag.Value.String())
 		}
 	})
+	log.Debug().Msgf("Version: %s", version)
 
-	fmt.Print(promptmodule.GetPrompt(configPath, themePath, shell, exitCode))
+	fmt.Print(promptmodule.GetPrompt(configPath, themePath, shell, exitCode, version))
 }

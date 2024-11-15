@@ -1,25 +1,19 @@
 package main
 
 import (
-	"os"
 	"promptorium/cmd"
+	"promptorium/cmd/utils"
 
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 var Version string
 
-var Authors = []string{
-	"Vladislav Parfeniuc",
-}
-
 func main() {
 	// Configure logging
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	log.Logger = utils.GetLogger()
 
+	cmd.Version = Version
 	// Run the command
-	cmd.Execute(Version)
+	cmd.Execute()
 }

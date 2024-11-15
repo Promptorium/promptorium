@@ -18,24 +18,24 @@ type ModuleEntry struct {
 	Get  func(config *Config, component *Component) (string, int)
 }
 type Theme struct {
-	ComponentStartDivider  string
-	ComponentEndDivider    string
-	Spacer                 string
-	PrimaryColor           Color
-	SecondaryColor         Color
-	TertiaryColor          Color
-	QuaternaryColor        Color
-	SuccessColor           Color
-	WarningColor           Color
-	ErrorColor             Color
-	BackgroundColor        Color
-	ForegroundColor        Color
-	GitStatusColorClean    Color
-	GitStatusColorDirty    Color
-	GitStatusColorNoBranch Color
-	GitStatusColorNoRemote Color
-	ExitCodeColorOk        Color
-	ExitCodeColorError     Color
+	ComponentStartDivider      string
+	ComponentEndDivider        string
+	Spacer                     string
+	PrimaryColor               Color
+	SecondaryColor             Color
+	TertiaryColor              Color
+	QuaternaryColor            Color
+	SuccessColor               Color
+	WarningColor               Color
+	ErrorColor                 Color
+	BackgroundColor            Color
+	ForegroundColor            Color
+	GitStatusColorClean        Color
+	GitStatusColorDirty        Color
+	GitStatusColorNoRepository Color
+	GitStatusColorNoUpstream   Color
+	ExitCodeColorOk            Color
+	ExitCodeColorError         Color
 }
 
 type Component struct {
@@ -141,24 +141,24 @@ type RawIconStyle struct {
 }
 
 type RawTheme struct {
-	ComponentStartDivider  string       `json:"component_start_divider,omitempty"`
-	ComponentEndDivider    string       `json:"component_end_divider,omitempty"`
-	Spacer                 string       `json:"spacer,omitempty"`
-	PrimaryColor           RawColorName `json:"primary_color,omitempty"`
-	SecondaryColor         RawColorName `json:"secondary_color,omitempty"`
-	TertiaryColor          RawColorName `json:"tertiary_color,omitempty"`
-	QuaternaryColor        RawColorName `json:"quaternary_color,omitempty"`
-	SuccessColor           RawColorName `json:"success_color,omitempty"`
-	WarningColor           RawColorName `json:"warning_color,omitempty"`
-	ErrorColor             RawColorName `json:"error_color,omitempty"`
-	BackgroundColor        RawColorName `json:"background_color,omitempty"`
-	ForegroundColor        RawColorName `json:"foreground_color,omitempty"`
-	GitStatusColorClean    RawColorName `json:"git_status_clean,omitempty"`
-	GitStatusColorDirty    RawColorName `json:"git_status_dirty,omitempty"`
-	GitStatusColorNoBranch RawColorName `json:"git_status_no_branch,omitempty"`
-	GitStatusColorNoRemote RawColorName `json:"git_status_no_remote,omitempty"`
-	ExitCodeColorOk        RawColorName `json:"exit_code_ok,omitempty"`
-	ExitCodeColorError     RawColorName `json:"exit_code_error,omitempty"`
+	ComponentStartDivider      string       `json:"component_start_divider,omitempty"`
+	ComponentEndDivider        string       `json:"component_end_divider,omitempty"`
+	Spacer                     string       `json:"spacer,omitempty"`
+	PrimaryColor               RawColorName `json:"primary_color,omitempty"`
+	SecondaryColor             RawColorName `json:"secondary_color,omitempty"`
+	TertiaryColor              RawColorName `json:"tertiary_color,omitempty"`
+	QuaternaryColor            RawColorName `json:"quaternary_color,omitempty"`
+	SuccessColor               RawColorName `json:"success_color,omitempty"`
+	WarningColor               RawColorName `json:"warning_color,omitempty"`
+	ErrorColor                 RawColorName `json:"error_color,omitempty"`
+	BackgroundColor            RawColorName `json:"background_color,omitempty"`
+	ForegroundColor            RawColorName `json:"foreground_color,omitempty"`
+	GitStatusColorClean        RawColorName `json:"git_status_clean,omitempty"`
+	GitStatusColorDirty        RawColorName `json:"git_status_dirty,omitempty"`
+	GitStatusColorNoRepository RawColorName `json:"git_status_no_repository,omitempty"`
+	GitStatusColorNoUpstream   RawColorName `json:"git_status_no_upstream,omitempty"`
+	ExitCodeColorOk            RawColorName `json:"exit_code_ok,omitempty"`
+	ExitCodeColorError         RawColorName `json:"exit_code_error,omitempty"`
 }
 
 // TODO: move this to a separate file

@@ -7,13 +7,12 @@ import (
 	"golang.org/x/term"
 )
 
-func GetPrompt(configPath string, themePath string, shell string, exitCode int) string {
-
-	config := confmodule.GetConfig(configPath, themePath, shell, exitCode)
+func GetPrompt(configPath string, themePath string, shell string, exitCode int, version string) string {
+	config := confmodule.GetConfig(configPath, themePath, shell, exitCode, version)
 
 	terminalWidth, _, error := term.GetSize(0)
 	if error != nil {
-		log.Debug().Msg("[PROMPT@promptmodule] Error getting terminal width")
+		log.Trace().Msg("Error getting terminal width")
 		terminalWidth = 0
 	}
 

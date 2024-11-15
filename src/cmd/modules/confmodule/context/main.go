@@ -53,7 +53,7 @@ func (context *ApplicationContext) getShell(shell string) Shell {
 	}
 }
 
-// Cached State
+// Cached Data
 
 type CachedData[T any] struct {
 	content  T
@@ -72,7 +72,7 @@ func NewCachedData[T any](refresh func() T, name string) CachedData[T] {
 
 func (c *CachedData[T]) GetContent() T {
 	if !c.isCached {
-		log.Debug().Msgf("[CACHED_DATA@context] Refreshing cached data %s", c.name)
+		log.Trace().Msgf("Refreshing cached data %s", c.name)
 		c.content = c.refresh()
 		c.isCached = true
 	}

@@ -173,8 +173,8 @@ The `theme.json` file has the following structure:
     "arrow_color": "color",
     "git_status_clean": "git_status_clean",
     "git_status_dirty": "git_status_dirty",
-    "git_status_no_branch": "git_status_no_branch",
-    "git_status_no_remote": "git_status_no_remote"
+    "git_status_no_repository": "git_status_no_repository",
+    "git_status_no_upstream": "git_status_no_upstream"
 }
 ```
 
@@ -242,13 +242,13 @@ The `git_status_clean` field is the color of the git status when the repository 
 
 The `git_status_dirty` field is the color of the git status when the repository is dirty. Default value is "yellow"
 
-#### Git Status No Branch (Optional)
+#### Git Status No Repository (Optional)
 
-The `git_status_no_branch` field is the color of the git status when no branch is checked out. Default value is "red"
+The `git_status_no_repository` field is the color of the git status when no branch is checked out. Default value is "blue"
 
-#### Git Status No Remote (Optional)
+#### Git Status No Upstream (Optional)
 
-The `git_status_no_remote` field is the color of the git status when no remote branch is checked out. Default value is "red"
+The `git_status_no_upstream` field is the color of the git status when no upstream branch is checked out. Default value is "white"
 
 ## Colors
 
@@ -372,8 +372,8 @@ The `git_status_color` color function is used to display the status of the git r
 Here is the color function's states and corresponding colors:
 - clean: the repository is clean, meaning that there are no uncommitted changes. Uses the `git_status_clean` theme color.
 - dirty: the repository is dirty, meaning that there are uncommitted changes. Uses the `git_status_dirty` theme color.
-- no-branch: no branch is currently checked out (e.g. not in a git repository). Uses the `git_status_no_branch` theme color.
-- no-remote: no remote branch is currently checked out. Uses the `git_status_no_remote` theme color.
+- no-repository: not in a git repository. Uses the `git_status_no_repository` theme color.
+- no-upstream: current local branch does not have an upstream branch. Uses the `git_status_no_upstream` theme color.
 
 
 ## Modules
@@ -400,10 +400,10 @@ The `git_status` module displays icons representing the status of the git reposi
     - `empty-circle`: Unstaged changes
     - `filled-circle`: Staged but uncommitted changes
     - `checkmark`: No changes
-- Regarding differences between the local and remote repository:
-    - `arrow-up`: Ahead of remote
-    - `arrow-down`: Behind remote
-    - `arrow-up` and `arrow-down`: Diverged from remote
+- Regarding differences between the local and upstream repository:
+    - `arrow-up`: Ahead of upstream
+    - `arrow-down`: Behind upstream
+    - `arrow-up` and `arrow-down`: Diverged from upstream
 
 ### os_icon
 

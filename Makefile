@@ -7,7 +7,7 @@ install:
 	cp -r shell/* ~/.config/promptorium/shell
 
 install-deb: build-deb
-	sudo apt install ./build/deb/promptorium_$(PROMPTORIUM_VERSION)-1_amd64.deb
+	sudo apt --reinstall install ./build/deb/promptorium_$(PROMPTORIUM_VERSION)-1_amd64.deb
 
 build-deb: build
 	bash scripts/build-deb.bash

@@ -80,7 +80,7 @@ func (b *PromptBuilder) BuildPrompt() string {
 func (b *PromptBuilder) splitComponents() ([]confmodule.Component, []confmodule.Component) {
 	leftComponents := []confmodule.Component{}
 	rightComponents := []confmodule.Component{}
-	log.Debug().Msgf("[BUILDERS@promptmodule]Splitting components")
+	log.Trace().Msg("Splitting components")
 
 	for _, component := range b.Config.Components {
 		if component.Style.Align == "right" {
@@ -118,7 +118,7 @@ func (b *PromptPartBuilder) buildPart() PromptPart {
 }
 
 func (b *ComponentBuilder) buildComponent() Component {
-	log.Debug().Msgf("[BUILDERS@promptmodule] Building component %s", b.Component.Name)
+	log.Trace().Msgf("Building component %s", b.Component.Name)
 
 	b.addContent().addIcon().addPadding().addDividers().addMargin()
 	return Component{
@@ -128,7 +128,6 @@ func (b *ComponentBuilder) buildComponent() Component {
 }
 
 func (b *ComponentBuilder) addIcon() *ComponentBuilder {
-
 	// TODO: Handle icon separators
 
 	icon := b.Component.Content.Icon
@@ -137,11 +136,11 @@ func (b *ComponentBuilder) addIcon() *ComponentBuilder {
 
 	isRight = b.Component.Content.IconStyle.IconPosition == "right"
 	if icon == "" {
-		log.Debug().Msgf("[BUILDERS@promptmodule] Component %s icon is empty, skipping icon", b.Component.Name)
+		log.Trace().Msgf("Component %s icon is empty, skipping icon", b.Component.Name)
 		return b
 	}
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("[BUILDERS@promptmodule] Component %s is empty, skipping icon", b.Component.Name)
+		log.Trace().Msgf("Component %s is empty, skipping icon", b.Component.Name)
 		return b
 	}
 
@@ -182,7 +181,7 @@ func (b *ComponentBuilder) addMargin() *ComponentBuilder {
 	marginStringRight := getMarginString(" ", marginRight, 0)
 
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("[BUILDERS@promptmodule] Component %s is empty, skipping margins", b.Component.Name)
+		log.Trace().Msgf("Component %s is empty, skipping margins", b.Component.Name)
 		return b
 	}
 
@@ -208,7 +207,7 @@ func (b *ComponentBuilder) addPadding() *ComponentBuilder {
 	paddingStringLeft := getPaddingString(" ", paddingLeft)
 	paddingStringRight := getPaddingString(" ", paddingRight)
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("[BUILDERS@promptmodule] Component %s is empty, skipping padding", b.Component.Name)
+		log.Trace().Msgf("Component %s is empty, skipping padding", b.Component.Name)
 		return b
 	}
 	colorizedLeftPadding := b.Config.ColorizeString(paddingStringLeft, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor)
@@ -221,7 +220,7 @@ func (b *ComponentBuilder) addPadding() *ComponentBuilder {
 func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("[BUILDERS@promptmodule] Component %s is empty, skipping dividers", b.Component.Name)
+		log.Trace().Msgf("Component %s is empty, skipping dividers", b.Component.Name)
 		return b
 	}
 	leftDivider := b.Component.Style.StartDivider
@@ -255,7 +254,7 @@ func (b *ComponentBuilder) addContent() *ComponentBuilder {
 
 	moduleEntry, ok := b.Config.Modules[b.Component.Content.Module]
 	if !ok {
-		fmt.Fprintln(os.Stderr, "Module not found:", b.Component.Content.Module)
+		fmt.Fprintln(os.Stderr, "promptorium: module", b.Component.Content.Module, "not found")
 		return b
 	}
 	str, len := moduleEntry.Get(&b.Config, &b.Component)

@@ -14,7 +14,7 @@ func GetShellScript(shell string, configPath string, themePath string) string {
 		shell = filepath.Base(os.Getenv("SHELL"))
 	}
 
-	log.Debug().Msgf("[SHELL@shellmodule] Shell: %s", shell)
+	log.Trace().Msgf("Shell: %s", shell)
 	return getShellScript(configPath, themePath, shell)
 }
 
@@ -58,7 +58,9 @@ func getBashScript(configPath string, themePath string) string {
 		promptorium_output=$(promptorium prompt --shell bash --config-file "$config_file" --theme-file "$theme_file" --exit-code "$exit_code")
 		PS1="$promptorium_output"
 	}
-	PROMPT_COMMAND=prompt_cmd`
+	PROMPT_COMMAND=prompt_cmd
+	source /etc/bash_completion
+	source <(promptorium completion bash)`
 	return bashScript
 }
 
@@ -72,6 +74,7 @@ func getZshScript(configPath string, themePath string) string {
 		promptorium_output=$(promptorium prompt --shell zsh --config-file "$config_file" --theme-file "$theme_file" --exit-code "$exit_code")
 		PROMPT="$promptorium_output"
 	}
-	precmd_functions+=set_prompt`
+	precmd_functions+=set_prompt
+	source <(promptorium completion zsh)`
 	return zshScript
 }

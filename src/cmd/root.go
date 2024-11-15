@@ -10,37 +10,42 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var Version string
 var rootCmd = &cobra.Command{
 	Use:   "promptorium",
 	Short: "A modular terminal prompt builder",
 	Long:  `A modular terminal prompt builder`,
 }
 
-func Execute(version string) {
+func Execute() {
+	rootCmd.Version = Version
 	// Set log level before running the command
 	start := time.Now()
 	rootCmd.ParseFlags(os.Args)
 	if rootCmd.Flags().Changed("debug") {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		log.Debug().Msg("[ROOT@cmd] Debug mode enabled")
+		switch rootCmd.Flags().Lookup("debug").Value.String() {
+		case "1":
+			zerolog.SetGlobalLevel(zerolog.DebugLevel)
+			log.Debug().Msg("Debug mode enabled")
+		case "2":
+			zerolog.SetGlobalLevel(zerolog.TraceLevel)
+			log.Trace().Msg("Trace mode enabled")
+		default:
+			zerolog.SetGlobalLevel(zerolog.TraceLevel)
+		}
 	}
-
-	if rootCmd.Flags().Changed("version") {
-
-		fmt.Println(version)
-		os.Exit(0)
-	}
-
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
 
 	elapsed := time.Since(start)
-	log.Debug().Msgf("[ROOT@cmd] Execution time: %s", elapsed)
+	if zerolog.GlobalLevel() == zerolog.DebugLevel || zerolog.GlobalLevel() == zerolog.TraceLevel {
+		fmt.Println()
+	}
+	log.Debug().Msgf("Execution time: %s", elapsed)
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolP("debug", "d", false, "Debug mode")
-	rootCmd.PersistentFlags().BoolP("version", "v", false, "Show version")
+	rootCmd.PersistentFlags().CountP("debug", "d", "Debug mode")
 }

@@ -16,5 +16,5 @@
     "git_status_clean" : "green",
     "git_status_dirty" : "yellow",
     "git_status_no_branch" : "blue",
-    "git_status_no_remote" : "yellow"
+    "git_status_no_upstream" : "yellow"
 }

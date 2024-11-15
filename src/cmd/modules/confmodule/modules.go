@@ -9,9 +9,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// Loads modules into the modules map
 func loadModules() map[string]ModuleEntry {
-	log.Debug().Msg("[MODULES@confmodule] Loading modules")
+	log.Trace().Msgf("Loading modules")
 	modules := make(map[string]ModuleEntry)
 	// Load modules
 	modules["git_branch"] = ModuleEntry{Name: "git_branch", Get: getGitBranchModuleContent}
@@ -21,7 +20,6 @@ func loadModules() map[string]ModuleEntry {
 	modules["user"] = ModuleEntry{Name: "user", Get: getUserModuleContent}
 	modules["os_icon"] = ModuleEntry{Name: "os_icon", Get: getOsIconModuleContent}
 	modules["git_status"] = ModuleEntry{Name: "git_status", Get: getGitStatusModuleContent}
-
 	return modules
 }
 
@@ -69,7 +67,7 @@ func getGitStatusModuleContent(config *Config, component *Component) (string, in
 		return "", 0
 	}
 
-	gitRemoteBranch := gitState.RemoteBranch
+	gitUpstreamBranch := gitState.UpstreamBranch
 	var gitStatusString string
 	isAheadIndicator := ""
 	isBehindIndicator := ""
@@ -98,7 +96,7 @@ func getGitStatusModuleContent(config *Config, component *Component) (string, in
 		isBehindIndicator += config.ColorizeString("↓", config.Theme.ErrorColor, component.Style.BackgroundColor)
 		componentLen += 2
 	}
-	if gitState.Ahead > 0 || gitRemoteBranch == "" {
+	if gitState.Ahead > 0 || gitUpstreamBranch == "" {
 		isAheadIndicator += config.ColorizeString(" ", config.Theme.ErrorColor, component.Style.BackgroundColor)
 		isAheadIndicator += config.ColorizeString("↑", config.Theme.GitStatusColorDirty, component.Style.BackgroundColor)
 		componentLen += 2

@@ -48,21 +48,21 @@ func parseTheme(theme RawTheme) Theme {
 	resultTheme.ForegroundColor = parseBaseColor(theme.ForegroundColor, "foreground", defaultTheme.ForegroundColor)
 	resultTheme.GitStatusColorClean = parseBaseColor(theme.GitStatusColorClean, "git_status_clean", defaultTheme.GitStatusColorClean)
 	resultTheme.GitStatusColorDirty = parseBaseColor(theme.GitStatusColorDirty, "git_status_dirty", defaultTheme.GitStatusColorDirty)
-	resultTheme.GitStatusColorNoBranch = parseBaseColor(theme.GitStatusColorNoBranch, "git_status_no_branch", defaultTheme.GitStatusColorNoBranch)
-	resultTheme.GitStatusColorNoRemote = parseBaseColor(theme.GitStatusColorNoRemote, "git_status_no_remote", defaultTheme.GitStatusColorNoRemote)
+	resultTheme.GitStatusColorNoRepository = parseBaseColor(theme.GitStatusColorNoRepository, "git_status_no_repository", defaultTheme.GitStatusColorNoRepository)
+	resultTheme.GitStatusColorNoUpstream = parseBaseColor(theme.GitStatusColorNoUpstream, "git_status_no_upstream", defaultTheme.GitStatusColorNoUpstream)
 	resultTheme.ExitCodeColorOk = parseBaseColor(theme.ExitCodeColorOk, "exit_code_ok", defaultTheme.ExitCodeColorOk)
 	resultTheme.ExitCodeColorError = parseBaseColor(theme.ExitCodeColorError, "exit_code_error", defaultTheme.ExitCodeColorError)
 	return resultTheme
 }
 
 func parseComponents(components []RawComponent, theme Theme, context *context.ApplicationContext) []Component {
-	log.Debug().Msgf("[PARSING@confmodule]Parsing components")
+	log.Trace().Msg("Parsing components")
 
 	// Initialize components to an empty slice
 	var resultComponents []Component
 
 	for _, component := range components {
-		log.Debug().Msgf("[PARSING@confmodule] Parsing component: %v", component.Name)
+		log.Trace().Msgf("Parsing component: %v", component.Name)
 
 		var resultComponent Component
 		resultComponent.Name = component.Name
@@ -242,17 +242,22 @@ func getGitStatusColor(theme Theme, context *context.ApplicationContext) Color {
 	gitState := context.GitContext.GetContent()
 
 	if !gitState.IsGitRepo {
-		return theme.GitStatusColorNoBranch
+		log.Debug().Msg("Setting git status color to no repository")
+		return theme.GitStatusColorNoRepository
 	}
 	if gitState.IsDirty {
+		log.Debug().Msg("Setting git status color to dirty")
 		return theme.GitStatusColorDirty
 	}
 	if gitState.LocalBranch == "" {
-		return theme.GitStatusColorNoBranch
+		log.Debug().Msg("Setting git status color to no repository")
+		return theme.GitStatusColorNoRepository
 	}
-	if gitState.RemoteBranch == "" {
-		return theme.GitStatusColorNoRemote
+	if gitState.UpstreamBranch == "" {
+		log.Debug().Msg("Setting git status color to no upstream branch")
+		return theme.GitStatusColorNoUpstream
 	}
+	log.Debug().Msg("Setting git status color to clean")
 	return theme.GitStatusColorClean
 
 }
