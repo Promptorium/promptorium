@@ -37,5 +37,5 @@ func Execute(version string) {
 
 func init() {
 	rootCmd.PersistentFlags().BoolP("debug", "d", false, "Debug mode")
-	rootCmd.PersistentFlags().Bool("version", false, "Show version")
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "Show version")
 }

@@ -37,9 +37,9 @@ func (b *ComponentBuilder) buildGitBranchModuleContent() *ComponentBuilder {
 
 	gitBranch := b.Config.State.GitBranch
 
-	b.ComponentLen += utf8.RuneCountInString(string(gitBranch))
+	b.ComponentLen += utf8.RuneCountInString(string(gitBranch.GetContent()))
 
-	b.ComponentStr += gitBranch
+	b.ComponentStr += gitBranch.GetContent()
 
 	return b
 
@@ -64,7 +64,7 @@ func (b *ComponentBuilder) buildOsIconModuleContent() *ComponentBuilder {
 
 func getOSIcon(config confmodule.Config) string {
 
-	switch strings.ToLower(config.State.OS) {
+	switch strings.ToLower(config.State.OS.GetContent()) {
 	case "linux":
 		return "󰌽"
 	case "macos":
@@ -105,37 +105,37 @@ func (b *ComponentBuilder) buildGitStatusModuleContent() *ComponentBuilder {
 	stagingAreaStatus := ""
 	numberOfChanges := ""
 
-	if b.Config.State.GitBranch == "" {
+	if b.Config.State.GitBranch.GetContent() == "" {
 		return b
 	}
 
 	// Set staging area status
 	if gitStatus.HasUnstagedChanges {
-		stagingAreaStatus += utils.Colorize("", b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+		stagingAreaStatus += utils.Colorize("", b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += 1
 	} else if gitStatus.HasStagedChanges {
-		stagingAreaStatus += utils.Colorize("", b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+		stagingAreaStatus += utils.Colorize("", b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += 1
 	} else {
-		stagingAreaStatus += utils.Colorize("", b.Config.Theme.SuccessColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+		stagingAreaStatus += utils.Colorize("", b.Config.Theme.SuccessColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += 1
 	}
 
 	// Set ahead/behind indicators
 	if gitStatus.IsBehind {
-		isBehindIndicator += utils.Colorize(" ", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
-		isBehindIndicator += utils.Colorize("↓", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+		isBehindIndicator += utils.Colorize(" ", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
+		isBehindIndicator += utils.Colorize("↓", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += 2
 	}
-	if gitStatus.IsAhead || gitRemoteBranch == "" {
-		isAheadIndicator += utils.Colorize(" ", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
-		isAheadIndicator += utils.Colorize("↑", b.Config.Theme.GitStatusColorDirty, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+	if gitStatus.IsAhead || gitRemoteBranch.GetContent() == "" {
+		isAheadIndicator += utils.Colorize(" ", b.Config.Theme.ErrorColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
+		isAheadIndicator += utils.Colorize("↑", b.Config.Theme.GitStatusColorDirty, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += 2
 	}
 
 	// Set number of changes
 	if gitStatus.NumUnstagedChanges > 0 {
-		numberOfChanges = utils.Colorize(fmt.Sprintf("%d", gitStatus.NumUnstagedChanges), b.Config.Theme.ForegroundColor, b.Config.Theme.GitStatusColorDirty, false, b.Config.State.Shell)
+		numberOfChanges = utils.Colorize(fmt.Sprintf("%d", gitStatus.NumUnstagedChanges), b.Config.Theme.ForegroundColor, b.Config.Theme.GitStatusColorDirty, false, b.Config.State.Shell.GetContent())
 		b.ComponentLen += utf8.RuneCountInString(fmt.Sprintf("%d", gitStatus.NumUnstagedChanges))
 	}
 	// Assemble git status string

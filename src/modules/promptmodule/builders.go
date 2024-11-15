@@ -155,7 +155,7 @@ func (b *ComponentBuilder) addIcon() *ComponentBuilder {
 	} else {
 		iconString = icon + getPaddingString(" ", padding)
 	}
-	colorizedIconString := utils.Colorize(iconString, iconForegroundColor, iconBackgroundColor, false, b.Config.State.Shell)
+	colorizedIconString := utils.Colorize(iconString, iconForegroundColor, iconBackgroundColor, false, b.Config.State.Shell.GetContent())
 
 	if isRight {
 		b.ComponentStr = b.ComponentStr + colorizedIconString
@@ -213,7 +213,7 @@ func (b *ComponentBuilder) addPadding() *ComponentBuilder {
 		return b
 	}
 
-	b.ComponentStr = utils.Colorize(paddingStringLeft, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell) + b.ComponentStr + utils.Colorize(paddingStringRight, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell)
+	b.ComponentStr = utils.Colorize(paddingStringLeft, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent()) + b.ComponentStr + utils.Colorize(paddingStringRight, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
 	b.ComponentLen += utf8.RuneCountInString(paddingStringLeft) + utf8.RuneCountInString(paddingStringRight)
 	return b
 }
@@ -237,13 +237,13 @@ func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 	}
 
 	if utf8.RuneCountInString(leftDivider) != 0 {
-		colorizedLeftDivider := utils.Colorize(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell)
+		colorizedLeftDivider := utils.Colorize(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentStr = colorizedLeftDivider + b.ComponentStr
 		b.ComponentLen += 1
 	}
 
 	if utf8.RuneCountInString(rightDivider) != 0 {
-		colorizedRightDivider := utils.Colorize(rightDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell)
+		colorizedRightDivider := utils.Colorize(rightDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell.GetContent())
 		b.ComponentStr = b.ComponentStr + colorizedRightDivider
 		b.ComponentLen += 1
 	}
@@ -282,7 +282,7 @@ func (b *ComponentBuilder) addContent() *ComponentBuilder {
 		fmt.Fprintln(os.Stderr, "Module not implemented:", b.Component.Content.Module)
 	}
 
-	b.ComponentStr = utils.Colorize(b.ComponentStr, b.Component.Style.BackgroundColor, b.Component.Style.ForegroundColor, true, b.Config.State.Shell)
+	b.ComponentStr = utils.Colorize(b.ComponentStr, b.Component.Style.BackgroundColor, b.Component.Style.ForegroundColor, true, b.Config.State.Shell.GetContent())
 
 	return b
 }

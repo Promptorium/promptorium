@@ -11,28 +11,29 @@ import (
 )
 
 type ApplicationState struct {
-	GitStatus       string
-	GitRemote       string
-	GitBranch       string
-	GitRemoteBranch string
-	ExitCode        int
-	OS              string
-	Shell           string
+	gitStatus       CachedState[string]
+	GitStatus       CachedState[string]
+	GitRemote       CachedState[string]
+	GitBranch       CachedState[string]
+	GitRemoteBranch CachedState[string]
+	ExitCode        CachedState[int]
+	OS              CachedState[string]
+	Shell           CachedState[string]
 }
 
 func getApplicationState(shell string, exitCode int) ApplicationState {
 	state := ApplicationState{}
-	state.GitRemote = getGitRemote()
-	state.GitRemoteBranch = getGitRemoteBranch(state.GitRemote)
-	state.GitBranch = getGitBranch()
-	state.GitStatus = getGitStatus(state.GitRemoteBranch)
-	state.ExitCode = getExitCode(exitCode)
-	state.OS = getOS()
-	state.Shell = getShell(shell)
+	state.GitRemote = NewCachedState[string](state.getGitRemote)
+	state.GitRemoteBranch = NewCachedState[string](state.getGitRemoteBranch)
+	state.GitBranch = NewCachedState[string](state.getGitBranch)
+	state.GitStatus = NewCachedState[string](state.getGitStatus)
+	state.ExitCode = NewCachedState[int](func() int { return exitCode })
+	state.OS = NewCachedState[string](state.getOS)
+	state.Shell = NewCachedState[string](func() string { return shell })
 	return state
 }
 
-func getGitStatus(gitRemoteBranch string) string {
+func (state *ApplicationState) getGitStatus() string {
 	stdErr := bytes.Buffer{}
 	cmd := exec.Command("git", "status", "--porcelain")
 	cmd.Stderr = &stdErr
@@ -44,7 +45,7 @@ func getGitStatus(gitRemoteBranch string) string {
 	if strings.Contains(stdErr.String(), "fatal:") {
 		return "no_branch"
 	}
-	if gitRemoteBranch == "" {
+	if state.GitRemoteBranch.GetContent() == "" {
 		return "no_remote"
 	}
 
@@ -55,7 +56,7 @@ func getGitStatus(gitRemoteBranch string) string {
 	return "dirty"
 }
 
-func getGitBranch() string {
+func (state *ApplicationState) getGitBranch() string {
 	output, err := exec.Command("git", "branch", "--show-current").Output()
 	if err != nil {
 		return ""
@@ -67,7 +68,7 @@ func getGitBranch() string {
 	return branch
 }
 
-func getGitRemote() string {
+func (state *ApplicationState) getGitRemote() string {
 	output, err := exec.Command("git", "remote").Output()
 	if err != nil {
 		return ""
@@ -76,11 +77,12 @@ func getGitRemote() string {
 	return remote
 }
 
-func getGitRemoteBranch(remote string) string {
+func (state *ApplicationState) getGitRemoteBranch() string {
 	output, err := exec.Command("git", "status", "-sb").Output()
 	if err != nil {
 		return ""
 	}
+	remote := state.GitRemote.GetContent()
 	remoteBranch := ""
 	for _, line := range strings.Split(string(output), "\n") {
 		if strings.HasPrefix(line, "## ") {
@@ -96,7 +98,7 @@ func getGitRemoteBranch(remote string) string {
 	log.Debug().Msgf("No remote branch found")
 	return remoteBranch
 }
-func getOS() string {
+func (state *ApplicationState) getOS() string {
 	output, err := exec.Command("uname", "-s").Output()
 	if err != nil {
 		return ""
@@ -127,7 +129,7 @@ func getOS() string {
 	return os
 }
 
-func getExitCode(exitCode int) int {
+func (state *ApplicationState) getExitCode(exitCode int) int {
 	// Get exit code from last command
 	if exitCode != 0 {
 		return 1
@@ -135,7 +137,7 @@ func getExitCode(exitCode int) int {
 	return 0
 }
 
-func getShell(shell string) string {
+func (state *ApplicationState) getShell(shell string) string {
 	shell = filepath.Base(shell)
 	switch shell {
 	case "bash":
@@ -145,4 +147,25 @@ func getShell(shell string) string {
 	default:
 		return "unknown"
 	}
+}
+
+type CachedState[T any] struct {
+	content  T
+	isCached bool
+	refresh  func() T
+}
+
+func NewCachedState[T any](refresh func() T) CachedState[T] {
+	return CachedState[T]{
+		isCached: false,
+		refresh:  refresh,
+	}
+}
+
+func (c *CachedState[T]) GetContent() T {
+	if !c.isCached {
+		c.content = c.refresh()
+		c.isCached = true
+	}
+	return c.content
 }

@@ -243,16 +243,17 @@ func parseColor(rawColor RawColorName, theme Theme, colorName string, defaultCol
 }
 
 func getGitStatusColor(theme Theme, state ApplicationState) Color {
-	if state.GitStatus == "clean" {
+
+	if state.GitStatus.GetContent() == "clean" {
 		return theme.GitStatusColorClean
 	}
-	if state.GitStatus == "dirty" {
+	if state.GitStatus.GetContent() == "dirty" {
 		return theme.GitStatusColorDirty
 	}
-	if state.GitStatus == "no_branch" {
+	if state.GitStatus.GetContent() == "no_branch" {
 		return theme.GitStatusColorNoBranch
 	}
-	if state.GitStatus == "no_remote" {
+	if state.GitStatus.GetContent() == "no_remote" {
 		return theme.GitStatusColorNoRemote
 	}
 	return theme.GitStatusColorClean
@@ -260,7 +261,7 @@ func getGitStatusColor(theme Theme, state ApplicationState) Color {
 }
 
 func getExitCodeColor(theme Theme, state ApplicationState) Color {
-	if state.ExitCode == 0 {
+	if state.ExitCode.GetContent() == 0 {
 		return theme.ExitCodeColorOk
 	}
 	return theme.ExitCodeColorError

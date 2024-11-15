@@ -155,6 +155,8 @@ type RawTheme struct {
 	ExitCodeColorError     RawColorName `json:"exit_code_error,omitempty"`
 }
 
+// TODO: move this to a separate file
+
 /*
  * Default values
  */

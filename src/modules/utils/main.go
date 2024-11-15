@@ -11,7 +11,7 @@ func GetBottomDecoration(config confmodule.Config) (string, int) {
 
 	decorationString := "  "
 	decorationLen := 3
-	decorationString = Colorize(decorationString, config.Theme.SecondaryColor, config.Theme.BackgroundColor, false, config.State.Shell)
+	decorationString = Colorize(decorationString, config.Theme.SecondaryColor, config.Theme.BackgroundColor, false, config.State.Shell.GetContent())
 	return decorationString, decorationLen
 }
 
@@ -34,7 +34,7 @@ func GetSpacer(config confmodule.Config, promptLen int, terminalWidth int) strin
 	}
 
 	spacer := strings.Repeat(spacerChar, margin)
-	return Colorize(spacer, config.Theme.ForegroundColor, config.Theme.BackgroundColor, false, config.State.Shell)
+	return Colorize(spacer, config.Theme.ForegroundColor, config.Theme.BackgroundColor, false, config.State.Shell.GetContent())
 }
 
 /*
