@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -17,10 +18,11 @@ var rootCmd = &cobra.Command{
 
 func Execute(version string) {
 	// Set log level before running the command
+	start := time.Now()
 	rootCmd.ParseFlags(os.Args)
 	if rootCmd.Flags().Changed("debug") {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		log.Debug().Msg("Debug mode enabled")
+		log.Debug().Msg("[Promptorium]Debug mode enabled")
 	}
 
 	if rootCmd.Flags().Changed("version") {
@@ -33,6 +35,9 @@ func Execute(version string) {
 	if err != nil {
 		os.Exit(1)
 	}
+
+	elapsed := time.Since(start)
+	log.Debug().Msgf("[Promptorium] Execution time: %s", elapsed)
 }
 
 func init() {

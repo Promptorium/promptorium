@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"promptorium/modules/shellmodule"
+	"promptorium/cmd/modules/shellmodule"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"

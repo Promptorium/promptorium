@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"promptorium/modules/promptmodule"
+	"promptorium/cmd/modules/promptmodule"
 	"strconv"
 
 	"github.com/spf13/cobra"

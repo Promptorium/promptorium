@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"promptorium/modules/initmodule"
+	"promptorium/cmd/modules/initmodule"
 
 	"github.com/spf13/cobra"
 )

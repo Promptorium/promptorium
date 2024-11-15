@@ -2,16 +2,21 @@ package confmodule
 
 import (
 	"encoding/json"
+	"promptorium/cmd/modules/confmodule/context"
 )
 
-type Color struct {
-	BackgroudCode  string
-	ForegroundCode string
-	Name           string
+type Config struct {
+	Version    string
+	Theme      Theme
+	Components []Component
+	Context    *context.ApplicationContext
+	Modules    map[string]ModuleEntry
 }
 
-type ColorName string
-
+type ModuleEntry struct {
+	Name string
+	Get  func(config *Config, component *Component) (string, int)
+}
 type Theme struct {
 	ComponentStartDivider  string
 	ComponentEndDivider    string
@@ -87,12 +92,13 @@ type ModuleStyle struct {
 	Separator       string
 }
 
-type Config struct {
-	Version    string
-	Theme      Theme
-	Components []Component
-	State      ApplicationState
+type Color struct {
+	BackgroudCode  string
+	ForegroundCode string
+	Name           string
 }
+
+type ColorName string
 
 // Raw config
 

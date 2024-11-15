@@ -1,7 +1,7 @@
 package promptmodule
 
 import (
-	"promptorium/modules/confmodule"
+	"promptorium/cmd/modules/confmodule"
 
 	"github.com/rs/zerolog/log"
 	"golang.org/x/term"
@@ -16,8 +16,6 @@ func GetPrompt(configPath string, themePath string, shell string, exitCode int) 
 		log.Debug().Msg("Error getting terminal width")
 		terminalWidth = 0
 	}
-
-	//TODO: Handle shell and exit code
 
 	return NewPromptBuilder(config, terminalWidth).BuildPrompt()
 

@@ -258,7 +258,7 @@ Promptorium has three types of color parameters: ***base colors***, ***theme col
 
 **[Theme colors](#theme-colors)** are colors that you can customize using the `theme.json` file.
 
-**[Color functions](#color-functions)** are special colors which change depending on the state of the application.
+**[Color functions](#color-functions)** are special colors which change depending on the context of the application.
 
 
 For example, here is an example of a **base color**:
@@ -351,7 +351,7 @@ When using theme colors in components, remember to put a `$` in front of the col
 
 ### Color Functions
 
-Color functions are special colors which change depending on the state of the application.
+Color functions are special colors which change depending on the context of the application.
 
 Here are the available color functions:
 - `exit_code_color`

@@ -62,7 +62,7 @@ Version: $PROMPTORIUM_VERSION
 Maintainer: Vladislav Parfeniuc
 Homepage: https://github.com/Promptorium/promptorium
 Architecture: $arch
-Depends: bash, git, curl
+Depends: git
 Description: A modular and configurable terminal prompt builder" > ./build/deb/promptorium_"$PROMPTORIUM_VERSION"-1_$arch/DEBIAN/control
 
 }

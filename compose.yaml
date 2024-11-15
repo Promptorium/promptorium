@@ -1,0 +1,5 @@
+services:
+  debian:
+    context: ./debian
+    dockerfile: Dockerfile
+

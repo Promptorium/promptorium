@@ -3,8 +3,7 @@ package promptmodule
 import (
 	"fmt"
 	"os"
-	"promptorium/modules/confmodule"
-	"promptorium/modules/utils"
+	"promptorium/cmd/modules/confmodule"
 	"strings"
 	"unicode/utf8"
 
@@ -95,11 +94,11 @@ func (b *PromptBuilder) splitComponents() ([]confmodule.Component, []confmodule.
 
 func (b *PromptBuilder) joinParts(leftPart PromptPart, rightPart PromptPart) string {
 	//TODO: Better handling of the arrow decoration
-	bottomDecoration, _ := utils.GetBottomDecoration(b.Config)
+	bottomDecoration, _ := b.Config.GetBottomDecoration()
 	if rightPart.Len == 0 {
 		return leftPart.Str + bottomDecoration
 	}
-	spacer := utils.GetSpacer(b.Config, leftPart.Len+rightPart.Len, b.TerminalWidth)
+	spacer := b.Config.GetSpacer(leftPart.Len+rightPart.Len, b.TerminalWidth)
 	topRow := leftPart.Str + spacer + rightPart.Str + "\n"
 	bottomRow := bottomDecoration
 	return topRow + bottomRow
@@ -119,7 +118,7 @@ func (b *PromptPartBuilder) buildPart() PromptPart {
 }
 
 func (b *ComponentBuilder) buildComponent() Component {
-	log.Debug().Msgf("Building component %s", b.Component.Name)
+	log.Debug().Msgf("[ComponentBuilder] Building component %s", b.Component.Name)
 
 	b.addContent().addIcon().addPadding().addDividers().addMargin()
 	return Component{
@@ -138,11 +137,11 @@ func (b *ComponentBuilder) addIcon() *ComponentBuilder {
 
 	isRight = b.Component.Content.IconStyle.IconPosition == "right"
 	if icon == "" {
-		log.Debug().Msgf("Component icon is empty, skipping icon")
+		log.Debug().Msgf("[ComponentBuilder] Component %s icon is empty, skipping icon", b.Component.Name)
 		return b
 	}
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("Component is empty, skipping icon")
+		log.Debug().Msgf("[ComponentBuilder] Component %s is empty, skipping icon", b.Component.Name)
 		return b
 	}
 
@@ -155,7 +154,7 @@ func (b *ComponentBuilder) addIcon() *ComponentBuilder {
 	} else {
 		iconString = icon + getPaddingString(" ", padding)
 	}
-	colorizedIconString := utils.Colorize(iconString, iconForegroundColor, iconBackgroundColor, false, b.Config.State.Shell.GetContent())
+	colorizedIconString := b.Config.ColorizeString(iconString, iconForegroundColor, iconBackgroundColor)
 
 	if isRight {
 		b.ComponentStr = b.ComponentStr + colorizedIconString
@@ -183,7 +182,7 @@ func (b *ComponentBuilder) addMargin() *ComponentBuilder {
 	marginStringRight := getMarginString(" ", marginRight, 0)
 
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("Component is empty, skipping margins")
+		log.Debug().Msgf("[ComponentBuilder] Component %s is empty, skipping margins", b.Component.Name)
 		return b
 	}
 
@@ -209,11 +208,12 @@ func (b *ComponentBuilder) addPadding() *ComponentBuilder {
 	paddingStringLeft := getPaddingString(" ", paddingLeft)
 	paddingStringRight := getPaddingString(" ", paddingRight)
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("Component is empty, skipping padding")
+		log.Debug().Msgf("[ComponentBuilder] Component %s is empty, skipping padding", b.Component.Name)
 		return b
 	}
-
-	b.ComponentStr = utils.Colorize(paddingStringLeft, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent()) + b.ComponentStr + utils.Colorize(paddingStringRight, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor, false, b.Config.State.Shell.GetContent())
+	colorizedLeftPadding := b.Config.ColorizeString(paddingStringLeft, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor)
+	colorizedRightPadding := b.Config.ColorizeString(paddingStringRight, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor)
+	b.ComponentStr = colorizedLeftPadding + b.ComponentStr + colorizedRightPadding
 	b.ComponentLen += utf8.RuneCountInString(paddingStringLeft) + utf8.RuneCountInString(paddingStringRight)
 	return b
 }
@@ -221,7 +221,7 @@ func (b *ComponentBuilder) addPadding() *ComponentBuilder {
 func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 
 	if b.ComponentLen == 0 {
-		log.Debug().Msgf("Component is empty, skipping dividers")
+		log.Debug().Msgf("[ComponentBuilder] Component %s is empty, skipping dividers", b.Component.Name)
 		return b
 	}
 	leftDivider := b.Component.Style.StartDivider
@@ -237,13 +237,13 @@ func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 	}
 
 	if utf8.RuneCountInString(leftDivider) != 0 {
-		colorizedLeftDivider := utils.Colorize(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell.GetContent())
+		colorizedLeftDivider := b.Config.ColorizeString(leftDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor)
 		b.ComponentStr = colorizedLeftDivider + b.ComponentStr
 		b.ComponentLen += 1
 	}
 
 	if utf8.RuneCountInString(rightDivider) != 0 {
-		colorizedRightDivider := utils.Colorize(rightDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor, false, b.Config.State.Shell.GetContent())
+		colorizedRightDivider := b.Config.ColorizeString(rightDivider, b.Component.Style.BackgroundColor, b.Config.Theme.BackgroundColor)
 		b.ComponentStr = b.ComponentStr + colorizedRightDivider
 		b.ComponentLen += 1
 	}
@@ -252,37 +252,18 @@ func (b *ComponentBuilder) addDividers() *ComponentBuilder {
 }
 
 func (b *ComponentBuilder) addContent() *ComponentBuilder {
-	switch b.Component.Content.Module {
 
-	case "time":
-		b.buildTimeModuleContent()
-
-	case "hostname":
-		b.buildHostnameModuleContent()
-
-	case "cwd":
-		b.buildCwdModuleContent()
-
-	case "git_branch":
-		b.buildGitBranchModuleContent()
-
-	case "exit_status":
-		b.buildExitStatusModuleContent()
-
-	case "user":
-		b.buildUserModuleContent()
-
-	case "os_icon":
-		b.buildOsIconModuleContent()
-
-	case "git_status":
-		b.buildGitStatusModuleContent()
-
-	default:
-		fmt.Fprintln(os.Stderr, "Module not implemented:", b.Component.Content.Module)
+	moduleEntry, ok := b.Config.Modules[b.Component.Content.Module]
+	if !ok {
+		fmt.Fprintln(os.Stderr, "Module not found:", b.Component.Content.Module)
+		return b
 	}
+	str, len := moduleEntry.Get(&b.Config, &b.Component)
 
-	b.ComponentStr = utils.Colorize(b.ComponentStr, b.Component.Style.BackgroundColor, b.Component.Style.ForegroundColor, true, b.Config.State.Shell.GetContent())
+	b.ComponentStr += str
+	b.ComponentLen += len
+
+	b.ComponentStr = b.Config.ColorizeString(b.ComponentStr, b.Component.Style.ForegroundColor, b.Component.Style.BackgroundColor)
 
 	return b
 }

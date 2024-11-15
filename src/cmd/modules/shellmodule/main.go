@@ -51,8 +51,8 @@ func getBashScript(configPath string, themePath string) string {
 	bashScript := `
 	#!/bin/bash
 		function prompt_cmd() {
-		local exit_code promptorium_output config_file theme_file
-		exit_code="$?"
+		local exit_code="$?"
+		local promptorium_output config_file theme_file
 		config_file=` + configPath + `
 		theme_file=` + themePath + `
 		promptorium_output=$(promptorium prompt --shell bash --config-file "$config_file" --theme-file "$theme_file" --exit-code "$exit_code")
@@ -65,8 +65,8 @@ func getBashScript(configPath string, themePath string) string {
 func getZshScript(configPath string, themePath string) string {
 	zshScript := `
 	function set_prompt() {
-		local exit_code promptorium_output config_file theme_file
-		exit_code="$?"
+		local exit_code="$?"
+		local promptorium_output config_file theme_file
 		config_file=` + configPath + `
 		theme_file=` + themePath + `
 		promptorium_output=$(promptorium prompt --shell zsh --config-file "$config_file" --theme-file "$theme_file" --exit-code "$exit_code")
