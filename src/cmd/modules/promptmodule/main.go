@@ -13,7 +13,7 @@ func GetPrompt(configPath string, themePath string, shell string, exitCode int) 
 
 	terminalWidth, _, error := term.GetSize(0)
 	if error != nil {
-		log.Debug().Msg("Error getting terminal width")
+		log.Debug().Msg("[PROMPT@promptmodule] Error getting terminal width")
 		terminalWidth = 0
 	}
 

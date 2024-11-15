@@ -34,14 +34,14 @@ func GetGitState() GitContext {
 	cmd := exec.Command("git", "status", "--porcelain=v2", "--branch", "-z")
 	output, err := cmd.Output()
 	if err != nil {
-		log.Debug().Msgf("[Context] Error getting git context: %s", err)
+		log.Debug().Msgf("[CONTEXT@gitcontext] Error getting git context: %s", err)
 		return GitContext{
 			IsGitRepo: false,
 		}
 	}
 	changes, err := getchanges(output)
 	if err != nil {
-		log.Debug().Msgf("[Context] Error parsing git context: %s", err)
+		log.Debug().Msgf("[CONTEXT@gitcontext] Error parsing git context: %s", err)
 		return GitContext{
 			IsGitRepo: false,
 		}
@@ -51,10 +51,10 @@ func GetGitState() GitContext {
 	ahead, behind := getAheadBehind(output)
 
 	// Return the git context
-	log.Debug().Msgf("[Context] Found git repo")
-	log.Debug().Msgf("[Context] Git branch: %s", localBranch)
-	log.Debug().Msgf("[Context] Git remote: %s", remoteBranch)
-	log.Debug().Msgf("[Context] Git ahead: %d, behind: %d, unstaged changes: %d, staged changes: %d, untracked files: %d", ahead, behind, changes.UnstagedChanges, changes.StagedChanges, changes.UntrackedFiles)
+	log.Debug().Msgf("[CONTEXT@gitcontext] Found git repo")
+	log.Debug().Msgf("[CONTEXT@gitcontext] Git branch: %s", localBranch)
+	log.Debug().Msgf("[CONTEXT@gitcontext] Git remote: %s", remoteBranch)
+	log.Debug().Msgf("[CONTEXT@gitcontext] Git ahead: %d, behind: %d, unstaged changes: %d, staged changes: %d, untracked files: %d", ahead, behind, changes.UnstagedChanges, changes.StagedChanges, changes.UntrackedFiles)
 
 	isDirty := ahead > 0 || behind > 0 || changes.StagedChanges > 0 || changes.UnstagedChanges > 0 || changes.UntrackedFiles > 0
 

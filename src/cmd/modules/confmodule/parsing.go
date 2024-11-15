@@ -56,13 +56,13 @@ func parseTheme(theme RawTheme) Theme {
 }
 
 func parseComponents(components []RawComponent, theme Theme, context *context.ApplicationContext) []Component {
-	log.Debug().Msgf("[Parsing@confmodule]Parsing components")
+	log.Debug().Msgf("[PARSING@confmodule]Parsing components")
 
 	// Initialize components to an empty slice
 	var resultComponents []Component
 
 	for _, component := range components {
-		log.Debug().Msgf("[Parsing@confmodule] Parsing component: %v", component.Name)
+		log.Debug().Msgf("[PARSING@confmodule] Parsing component: %v", component.Name)
 
 		var resultComponent Component
 		resultComponent.Name = component.Name

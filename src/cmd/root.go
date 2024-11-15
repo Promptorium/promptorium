@@ -22,7 +22,7 @@ func Execute(version string) {
 	rootCmd.ParseFlags(os.Args)
 	if rootCmd.Flags().Changed("debug") {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		log.Debug().Msg("[Promptorium]Debug mode enabled")
+		log.Debug().Msg("[ROOT@cmd] Debug mode enabled")
 	}
 
 	if rootCmd.Flags().Changed("version") {
@@ -37,7 +37,7 @@ func Execute(version string) {
 	}
 
 	elapsed := time.Since(start)
-	log.Debug().Msgf("[Promptorium] Execution time: %s", elapsed)
+	log.Debug().Msgf("[ROOT@cmd] Execution time: %s", elapsed)
 }
 
 func init() {

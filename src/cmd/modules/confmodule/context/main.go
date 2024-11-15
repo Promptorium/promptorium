@@ -72,7 +72,7 @@ func NewCachedData[T any](refresh func() T, name string) CachedData[T] {
 
 func (c *CachedData[T]) GetContent() T {
 	if !c.isCached {
-		log.Debug().Msgf("[CachedData] Refreshing cached data %s", c.name)
+		log.Debug().Msgf("[CACHED_DATA@context] Refreshing cached data %s", c.name)
 		c.content = c.refresh()
 		c.isCached = true
 	}

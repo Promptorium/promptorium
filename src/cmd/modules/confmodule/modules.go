@@ -11,7 +11,7 @@ import (
 
 // Loads modules into the modules map
 func loadModules() map[string]ModuleEntry {
-	log.Debug().Msg("Loading modules")
+	log.Debug().Msg("[MODULES@confmodule] Loading modules")
 	modules := make(map[string]ModuleEntry)
 	// Load modules
 	modules["git_branch"] = ModuleEntry{Name: "git_branch", Get: getGitBranchModuleContent}
