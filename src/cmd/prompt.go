@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"promptorium/cmd/modules/promptmodule"
+	"promptorium/internal/pkg/promptpkg"
 	"strconv"
 
 	"github.com/rs/zerolog/log"
@@ -22,7 +22,6 @@ var promptCmd = &cobra.Command{
 
 func init() {
 	promptCmd.Flags().StringP("config-file", "c", "", "Path to the config file")
-	promptCmd.Flags().StringP("theme-file", "t", "", "Path to the theme file")
 	promptCmd.Flags().StringP("shell", "s", "", "Shell for which to format the prompt (bash, zsh)")
 	promptCmd.Flags().IntP("exit-code", "e", 0, "Exit code of the previous command")
 	rootCmd.AddCommand(promptCmd)
@@ -31,16 +30,12 @@ func init() {
 func runPromptCmd(pFlags *pflag.FlagSet, version string) {
 
 	var configPath string
-	var themePath string
 	var shell string
 	var exitCode int
 
 	pFlags.VisitAll(func(flag *pflag.Flag) {
 		if flag.Name == "config-file" {
 			configPath = flag.Value.String()
-		}
-		if flag.Name == "theme-file" {
-			themePath = flag.Value.String()
 		}
 		if flag.Name == "shell" {
 			shell = flag.Value.String()
@@ -51,5 +46,5 @@ func runPromptCmd(pFlags *pflag.FlagSet, version string) {
 	})
 	log.Debug().Msgf("Version: %s", version)
 
-	fmt.Print(promptmodule.GetPrompt(configPath, themePath, shell, exitCode, version))
+	fmt.Print(promptpkg.GetPrompt(configPath, shell, exitCode, version))
 }

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"promptorium/cmd/modules/initmodule"
+	"promptorium/internal/pkg/initpkg"
 
 	"github.com/spf13/cobra"
 )
@@ -13,7 +13,7 @@ var initPromptoriumCmd = &cobra.Command{
 	- Create ~/.config/promptorium directory
 	- Copy config files from /usr/share/promptorium/conf to ~/.config/promptorium
 	- Copy preset files from /usr/share/promptorium/conf/presets to ~/.config/promptorium/presets
-	- Give file permissions to user (might ask for sudo password)
+	- Give file permissions to user (might ask for user password)
 	- Add line to ~/.bashrc and/or ~/.zshrc to source promptorium shell`,
 	Run: func(cmd *cobra.Command, args []string) {
 		runInitPromptoriumCmd()
@@ -21,7 +21,7 @@ var initPromptoriumCmd = &cobra.Command{
 }
 
 func runInitPromptoriumCmd() {
-	initmodule.InitPromptorium()
+	initpkg.InitPromptorium()
 }
 
 func init() {

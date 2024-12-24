@@ -1,0 +1,9 @@
+prompt: 
+- [ "$user","$hostname", "$cwd", "$git_branch","$git_remote","$git_status","---","time","$os_icon"]
+- ["$dollar_decoration"]
+components: "components.yaml"
+theme: "theme.yaml"
+
+options:
+  cwd:
+    highlight_git_root: true

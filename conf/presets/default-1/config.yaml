@@ -1,0 +1,11 @@
+prompt:
+- ["$top_arrow", "$os_icon", "$user", "$cwd", "$git_branch","$git_remote","$git_status","---", "$time", "$exit_status"]
+- ["$bottom_arrow"]
+
+components: "components.yaml"
+
+theme: "theme.yaml"
+
+options:
+  cwd:
+    highlight_git_root: true

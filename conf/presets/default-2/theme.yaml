@@ -1,0 +1,17 @@
+theme:
+  component_start_divider : ""
+  component_end_divider : ""
+  primary_color : "blue"
+  secondary_color : "green"
+  tertiary_color : "magenta"
+  quaternary_color : "cyan"
+  success_color : "green"
+  warning_color : "yellow"
+  error_color : "red"
+  background_color : "transparent"
+  foreground_color : "white"
+  git_status_clean : "green"
+  git_status_dirty : "yellow"
+  git_status_no_branch : "blue"
+  git_status_no_upstream: "white"
+

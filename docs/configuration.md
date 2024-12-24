@@ -4,53 +4,85 @@ sidebar_position: 3
 
 # Configuration
 
-Promptorium allows you to customize it using two files: `conf.json` and `theme.json`.These files are located by default at `~/.config/promptorium/`.
+Promptorium allows you to customize it using the `config.yaml` file located by default at `~/.config/promptorium/`.
 
-The `conf.json` file contains an array of objects, representing components (see below) while the `theme.json` file contains the theme's colors and other settings. The theme's colors are used to customize the appearance of the components.
+The `config.yaml` file contains the following sections:
+
+- `prompt`
+- `components`
+- `theme`
+- `options`
+
+## Prompt
+
+The `prompt` section contains an array of strings, representing the prompt. Each string can be a [module](#modules) name or a [component](#components) name prefixed with `$`.
+e.g. 
+
+```yaml title="~/.config/promptorium/config.yaml"
+prompt: [ 'module_name', '$component_name' ]
+components:
+  ...
+```
+
+In this example, the prompt will display the `module_name` module and the `component_name` component defined in the `components` section.
+
+The prompt can also contain the special `---` string, indicating the **spacer**.
+The spacer is used to separate the left and right sides of the prompt.
+e.g.
+```yaml title="~/.config/promptorium/config.yaml"
+prompt: [ 'module_name', '---', '$component_name' ]
+components:
+  ...
+```
+
+In this example, the prompt will display the `module_name` module to the left and the `component_name` component defined in the `components` section to the right, separated by a **spacer**.
+
+The prompt can also contain an array of arrays, representing a multiline prompt.
+e.g.
+```yaml title="~/.config/promptorium/config.yaml"
+prompt:
+  - [ 'module_name', '---', '$component_name' ]
+  - [ '$another_component']
+```
+
+This prompt configuration will display two lines of the prompt, the first line containing `module_name`, `---`, and `component_name`, and the second line containing `another_component`.
+
 
 ## Components
 
 Components are the building blocks of the prompt. Each component has a name, content, and style. The content is the actual content of the module, while the style is used to customize the appearance of the module.
 
-The `conf.json` file contains an array of objects, representing components. Each object has the following structure:
+The `config.yaml` file contains an array of objects, representing components. Each object has the following structure:
 
-```json title="~/.config/promptorium/conf.json"
-{
-    "components":[
-        {
-            "name": "component_name",        //required
-            "content": {
-                "module": "module_name",     //required
-                "icon": "icon_character",    //optional
-                "icon_style": {              //optional
-                    "background_color": "background_color",
-                    "foreground_color": "foreground_color",
-                    "margin": "margin",
-                    "padding": "padding",
-                    "align": "left|right"
-                }
-            },
-            "style": {                       //optional
-                "background_color": "background_color",
-                "foreground_color": "foreground_color",
-                "start_divider": "divider_character",
-                "end_divider": "divider_character",
-                "margin": "margin",
-                "padding": "padding",
-                "align": "left|right"
-            }
-        }
-    ]
-}
+```yaml title="~/.config/promptorium/config.yaml"
+
+components:
+- name: 'component_name'        //required
+  type: 'component_type'        //required
+  content:                      //required
+  style:                        //optional
+    ...
+
 ```
 
 ### Name (Required)
 
-The `name` field is the name of the component. It is needed to uniquely identify the component.
+The `name` field is the name of the component. It is needed to uniquely identify the component in the `prompt` field.
+
+
+### Type (Required)
+
+The `type` field is the type of the component. It can be one of the following:
+- `module`
+- `text`
 
 ### Content (Required)
 
-The `content` field contains the actual content of the component. It has two fields: `module` and `icon`.
+The `content` field contains the actual content of the component. Depending on the type of the component, the content will be processed differently:
+
+- For `module` components, the content is the name of the module to be displayed in the component.
+
+- For `text` components, the content is the text to be displayed in the component.
 
 #### Module (Required)
 
@@ -65,7 +97,7 @@ The `module` field is the name of the module to be displayed in the component. P
 - `os_icon`
 - `git_status`
 
-See below for more details on each module.
+For more details on each module, see the [Modules](#modules) section.
 
 #### Icon (Optional)
 
@@ -75,41 +107,24 @@ The `icon` field is the character that will be displayed as the icon of the comp
 Promptorium needs the `icon` to be one character long. Setting anicon with more than one character will result in incorrect behavior.
 :::
 
-#### Icon Style (Optional)
-
-The `icon_style` field is an object that contains the style of the icon.
-The `icon_style` object has the following structure:
-
-```json
-{
-    "icon_style": {
-        "background_color": "background_color",
-        "foreground_color": "foreground_color",
-        "padding": "padding",
-        "icon_position": "icon_position",
-        "separator": "separator"
-    }
-}
-```
-
 ### Style (Optional)
 
 The `style` field contains the style of the component. By default it is defined by the theme.
 
 The `style` object has the following structure:
 
-```json
-{
-    "style": {
-        "background_color": "background_color",
-        "foreground_color": "foreground_color",
-        "start_divider": "divider_character",
-        "end_divider": "divider_character",
-        "margin": "margin",
-        "padding": "padding",
-        "align": "left|right"
-    }
-}
+```yaml
+style: 
+    background_color: "background_color",
+    foreground_color: "foreground_color",
+    start_divider: "divider_character",
+    end_divider: "divider_character",
+    margin: "margin",
+    padding: "padding",
+    icon_background_color: "background_color",
+    icon_foreground_color: "foreground_color",
+    icon_padding: "padding",
+    icon_position: "left|right"
 ```
 
 #### Background Color (Optional)
@@ -132,10 +147,6 @@ The `end_divider` field is the character that will be displayed at the end of th
 Promptorium needs the `start_divider` and `end_divider` to be one character long. Setting them with more than one character will result in incorrect behavior.
 :::
 
-#### Align (Optional)
-
-The `align` field is the alignment of the component. Promptorium supports the following alignments: `left`, `right`. By default it is set to `left`
-
 Components aligned to the right are displayed on the right side of the prompt, separated from components aligned to the left by a string composed of [spacer](#spacer-optional) characters.
 #### Margin (Optional)
 
@@ -149,33 +160,44 @@ The `padding` field is the padding of the component, or the space between the se
 
 Similarly to the `margin` parameter, it can be set to a single number or two numbers separated by a space. By default it is set to `1`.
 
+#### Icon Background Color (Optional)
+
+The `icon_background_color` field is the background color of the icon. See the [Colors](#colors) section for more details on the available colors.
+
+#### Icon Foreground Color (Optional)
+
+The `icon_foreground_color` field is the foreground(text) color of the icon. See the [Colors](#colors) section for more details on the available colors.
+
+#### Icon Padding (Optional)
+
+The `icon_padding` field is the padding of the icon, or the space between the icon and the component's content.
+Unlike the `padding` parameter, it can only be set to a single number. By default it is set to `1`.
+
+#### Icon Position (Optional)
+
+The `icon_position` field is the position of the icon relative to the component. It can be either `left` or `right`. By default it is set to `left`.
+
 ## Theme
 
-The `theme.json` file contains the theme's colors and other settings. The theme's colors are used to customize the appearance of the components.
+The `theme` section contains the following fields:
+```yaml title="~/.config/promptorium/config.yaml"
+theme:
+    component_start_divider: component_start_divider
+    component_end_divider: component_end_divider
+    primary_color: color
+    secondary_color: color
+    tertiary_color: color
+    quaternary_color: color
+    success_color: color
+    warning_color: color
+    error_color: color
+    background_color: color
+    foreground_color: color
+    git_status_clean: git_status_clean
+    git_status_dirty: git_status_dirty
+    git_status_no_repository: git_status_no_repository
+    git_status_no_upstream: git_status_no_upstream
 
-The `theme.json` file has the following structure:
-
-```json title="~/.config/promptorium/theme.json"
-{
-    "component_start_divider": "component_start_divider",
-    "component_end_divider": "component_end_divider",
-    "spacer": "spacer",
-    "primary_color": "color",
-    "secondary_color": "color",
-    "tertiary_color": "color",
-    "quaternary_color": "color",
-    "success_color": "color",
-    "warning_color": "color",
-    "error_color": "color",
-    "background_color": "color",
-    "foreground_color": "color",
-    "arrow_decoration": "arrow_decoration",
-    "arrow_color": "color",
-    "git_status_clean": "git_status_clean",
-    "git_status_dirty": "git_status_dirty",
-    "git_status_no_repository": "git_status_no_repository",
-    "git_status_no_upstream": "git_status_no_upstream"
-}
 ```
 
 #### Component Start Divider (Optional)
@@ -185,10 +207,6 @@ The `component_start_divider` field is the character that will be displayed at t
 #### Component End Divider (Optional)
 
 The `component_end_divider` field is the character that will be displayed at the end of each component unless the `end_divider` field of the component is set.
-
-#### Spacer (Optional)
-
-The `spacer` field is the character that will be displayed in between the right and left sides of the prompt. Default value is "─"
 
 #### Primary Color (Optional)
 
@@ -226,14 +244,6 @@ The `background_color` field is the background color of the theme. Default value
 
 The `foreground_color` field is the foreground(color) color of the theme. Default value is "white"
 
-#### Arrow Decoration (Optional)
-
-The `arrow_decoration` field is not used at the moment. It is reserved for future use.
-
-#### Arrow Color (Optional)
-
-The `arrow_color` field is not used at the moment. It is reserved for future use.
-
 #### Git Status Clean (Optional)
 
 The `git_status_clean` field is the color of the git status when the repository is clean. Default value is "green"
@@ -263,50 +273,44 @@ Promptorium has three types of color parameters: ***base colors***, ***theme col
 
 For example, here is an example of a **base color**:
 
-```json
+```yaml
 
-{
-    "name": "my_component",
-    "content": {
-        "module": "my_module"
-    },
-    "style": {
-        // highlight-next-line
-        "background_color": "blue"
-    }
-}
+---
+name: my_component
+content:
+  module: my_module
+style:
+  // highlight-next-line
+  background_color: blue
+
 ```
 
 In this case, the background color is being set to a **base color**.
 
 Here is an example of a **theme color**:
-```json
+```yaml
+name: my_component
+content:
+  module: my_module
+style:
+  // highlight-next-line
+  background_color: "$primary_color"
+  ...
+theme:
+  primary_color: red
 
-{
-    "name": "my_component",
-    "content": {
-        "module": "my_module"
-    },
-    "style": {
-        // highlight-next-line
-        "background_color": "$primary_color"
-    }
-}
 ```
 In this case, the background color is being set to a **theme color**. You can customize the theme colors in the `theme.json` file.
 
 Here is an example of a **color function**:
-```json
-{
-    "name": "my_component",
-    "content": {
-        "module": "my_module"
-    },
-    "style": {
-        // highlight-next-line
-        "background_color": "$exit_code_color"
-    }
-}
+```yaml
+name: my_component
+content:
+  module: my_module
+style:
+  // highlight-next-line
+  background_color: "$exit_code_color"
+
 ```
 
 In this case, the background color is being set to a **color function**. You can customize the color function in the `theme.json` file.
@@ -314,7 +318,7 @@ In this case, the background color is being set to a **color function**. You can
 You can find more information about color functions in the [Color Functions](#color-functions) section.
 
 :::info
-Theme colors and color functions can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`)
+Theme colors and color functions can only be set to **base colors**. (e.g. `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`,`transparent`)
 :::
 
 
@@ -347,7 +351,9 @@ Here are the available theme colors:
 - `background_color` 
 - `foreground_color` 
 
-When using theme colors in components, remember to put a `$` in front of the color name.
+:::info
+When using theme colors or color functions in components, remember to put a `$` in front of the color name.
+:::
 
 ### Color Functions
 
@@ -378,7 +384,7 @@ Here is the color function's states and corresponding colors:
 
 ## Modules
 
-Modules are used to display different information in the promptorium prompt. They can be used in the `conf.json` file to customize the appearance of the prompt.
+Modules are used to display different information in the promptorium prompt. They can be used in the `config.yaml` file to customize the appearance of the prompt.
 Here are the available modules:
 
 ### user
@@ -424,37 +430,38 @@ The `time` module displays the current time, formatted as `HH:MM:SS`.
 
 The `hostname` module displays the current hostname.
 
+
 ## Presets
 
 Presets are useful when you want to change between different promptorium configurations.
 Promptorium allows you to create presets in the `~/.config/promptorium/presets/` directory.
 
-To use a preset, set the `preset` key in the `conf.json` file to the name of the preset you want to use. Promptorium will load the preset's `conf.json` and `theme.json` files by searching `~/.config/promptorium/presets/` for a directory with the same name as the preset.
+To use a preset, set the `preset` field in the `config.yaml` file to the name of the preset you want to use. Promptorium will load the preset's `config.yaml` and `theme.json` files by searching `~/.config/promptorium/presets/` for a directory with the same name as the preset.
 Here is an example :
 
-Let's say you have two presets, `default_1` and `default_2`. The `conf.json` and `theme.json` files for each preset are in the following folder structure:
+Let's say you have two presets, `default_1` and `default_2`. The `config.yaml` and `theme.json` files for each preset are in the following folder structure:
 ```bash
 ~/.config/promptorium/
 ├── presets
-│   ├── default_1
-│   │   ├── conf.json
-│   │   └── theme.json
-│   └── default_2
-│       ├── conf.json
-│       └── theme.json
-├── conf.json
-└── theme.json
+│   ├── default-1
+│   │   ├── config.yaml
+│   │   ├── components.yaml
+│   │   └── theme.yaml
+│   └── default-2
+│       ├── config.yaml
+│       ├── components.yaml
+│       └── theme.yaml
+└── config.yaml
 ```
 
-To use the `default_1` preset, set the `preset` key in the `conf.json` file to `default_1`. Promptorium will load the `default_1` preset's `conf.json` and `theme.json` files.
+To use the `default-1` preset, set the `preset` key in the `config.yaml` file to `default-1`. Promptorium will load the `default-1` preset's `config.yaml` file.
 
-```json title="~/.config/promptorium/conf.json"
-{
-    "preset" : "default_1"
-}
+```yaml title="~/.config/promptorium/config.yaml"
+preset : default-1
+
 ```
 
 :::info
-If the `preset` key in the `conf.json` file is set, Promptorium will ignore the rest of the `conf.json` file and the `theme.json` file.
+If the `preset` key in the `config.yaml` file is set, Promptorium will ignore the rest of the `conf.yaml` file.
 :::
  

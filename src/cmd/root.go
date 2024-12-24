@@ -41,6 +41,7 @@ func Execute() {
 
 	elapsed := time.Since(start)
 	if zerolog.GlobalLevel() == zerolog.DebugLevel || zerolog.GlobalLevel() == zerolog.TraceLevel {
+		// add a new line after the prompt if debug mode is enabled
 		fmt.Println()
 	}
 	log.Debug().Msgf("Execution time: %s", elapsed)

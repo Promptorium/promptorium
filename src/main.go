@@ -2,7 +2,7 @@ package main
 
 import (
 	"promptorium/cmd"
-	"promptorium/cmd/utils"
+	"promptorium/internal/utils"
 
 	"github.com/rs/zerolog/log"
 )

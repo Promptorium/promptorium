@@ -22,16 +22,14 @@ This command is used to initialize Promptorium. It generates the following file 
 
 ```bash
 ~/.config/promptorium/
-├── conf.json
+├── config.yaml
 └── presets
     ├── default_1
-    │   ├── conf.json
-    │   └── theme.json
+    │   └── config.yaml
     └── default_2
-        ├── conf.json
-        └── theme.json
+        └── config.yaml
 ```
-It copies the `conf.json` file from `/usr/share/promptorium/conf` to the `~/.config/promptorium` directory, but only if it doesn't already exist.It also copies the `presets` directory from `/usr/share/promptorium/conf` to the `~/.config/promptorium` directory, but only if the directory doesn't already exist.
+It copies the `config.yaml` file from `/usr/share/promptorium/conf` to the `~/.config/promptorium` directory, but only if it doesn't already exist.It also copies the `presets` directory from `/usr/share/promptorium/conf` to the `~/.config/promptorium` directory, but only if the directory doesn't already exist.
 
 Additionally, it adds the line `if [[ $(command -v promptorium) 2> /dev/null ]]; then source <(promptorium shell); fi` to your shell configuration file.
 

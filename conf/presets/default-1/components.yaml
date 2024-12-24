@@ -1,0 +1,106 @@
+components:
+
+- name: os_icon
+  type: module
+  content: os_icon
+  style:
+    background_color: transparent
+    foreground_color: "$exit_code_color"
+    margin: '1'
+    padding: '0'
+
+- name: user
+  type: module
+  content: user
+  style:
+    icon: ""
+    start_divider: "$default"
+    background_color: "$primary_color"
+    foreground_color: black
+    margin: '0 1'
+
+- name: cwd
+  type: module
+  content: cwd
+  style:
+    icon: ""
+    background_color: "$primary_color"
+    foreground_color: black
+    margin: '0'
+
+- name: git_branch
+  type: module
+  content: git_branch
+  style:
+    icon: ""
+    background_color: transparent
+    foreground_color: "$git_status_color"
+    padding: '0'
+    margin: '1'
+
+- name: git_status
+  type: module
+  content: git_status
+  style:
+    background_color: transparent
+    padding: '0'
+    margin: '0 1'
+
+- name: git_remote
+  type: module
+  content: git_remote
+  style:
+    icon: "@"
+    background_color: transparent
+    foreground_color: "$tertiary_color"
+    margin: '0'
+    padding: '0 1'
+
+- name: time
+  type: module
+  content: time
+  style:
+    foreground_color: white
+    background_color: transparent
+    margin: '1 0'
+    padding: '0'
+
+- name: exit_status
+  type: module
+  content: exit_status
+  style:
+    background_color: $exit_code_color
+    foreground_color: black
+    start_divider: ''
+    end_divider: ''
+    margin: '1 0'
+    padding: '0'
+    
+- name: version
+  type: plugin
+  content: version
+  style:
+    background_color: $exit_code_color
+    foreground_color: black
+    start_divider: ''
+    end_divider: ''
+    margin: '1 0'
+    padding: '0'
+
+- name: bottom_arrow
+  type: text
+  content: "╰⯈ "
+  style:
+    background_color: transparent
+    foreground_color: "$exit_code_color"
+    margin: '1 0'
+    padding: '0'
+
+- name: top_arrow
+  type: text
+  content: "╭"
+  style:
+    background_color: transparent
+    foreground_color: "$exit_code_color"
+    margin: '1 0'
+    padding: '0'
