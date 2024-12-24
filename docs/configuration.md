@@ -465,3 +465,16 @@ preset : default-1
 If the `preset` key in the `config.yaml` file is set, Promptorium will ignore the rest of the `conf.yaml` file.
 :::
  
+
+
+## Options
+
+Options are used to configure the promptorium prompt. They can be used in the `config.yaml` file to customize the appearance of the prompt.
+
+Here are the available option categories and their corresponding options:
+
+### cwd
+
+The `cwd` option is used to configure the cwd module.
+
+- `highlight_git_root` (bool): If true, the root of the git repository will be underlined in the cwd module. Default value is false. In cases of nested git repositories, the root of the outermost repository will be underlined.
